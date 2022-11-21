@@ -1,0 +1,521 @@
+openapi: 3.0.0
+info:
+  contact:
+    email: dh@blaimi.de
+  license:
+    name: MIT
+    url: http://biletado.gitlab.io/LICENSE.txt
+  termsOfService: http://biletado.gitlab.io/
+  title: Biletado services
+  version: 1.0.0
+servers:
+- description: default biletado persoal api
+  url: /api
+tags:
+- description: CRUD employee
+  name: employee
+- description: CRUD assignment between employee and reservation
+  name: assignment
+paths:
+  /personal/status/:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_personal_status__get_200_response'
+          description: successful operation
+      summary: returns information about the backend-service and status
+      x-accepts: application/json
+  /personal/assignments/:
+    get:
+      parameters:
+      - description: filter for a given employee
+        explode: true
+        in: query
+        name: employee_id
+        required: false
+        schema:
+          format: uuid
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_personal_assignments__get_200_response'
+          description: successful operation
+      summary: get all personal assignments
+      tags:
+      - assignment
+      x-accepts: application/json
+      x-tags:
+      - tag: assignment
+    post:
+      description: "MAY contain a uuid. If so, this method does the same checks as\
+        \ `PUT` does."
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/assignment'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/assignment'
+          description: |
+            Successful operation of updating an existing assignment.
+            This can only happen if a uuid gets passed.
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/assignment'
+          description: successful operation of creating a new assignment
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: invalid input
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: if no (valid) authentication is given
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: |
+            if the reservation already has an assignment with the given role
+            or the employee does not exist
+            or the reservation does not exist
+      security:
+      - biletado: []
+      summary: add a new assignment
+      tags:
+      - assignment
+      x-content-type: application/json
+      x-accepts: application/json
+      x-tags:
+      - tag: assignment
+  /personal/assignments/{id}/:
+    delete:
+      parameters:
+      - description: uuid of the assignment
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: successful operation
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: if no (valid) authentication is given
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: not found
+      security:
+      - biletado: []
+      summary: delete an assignment by id
+      tags:
+      - assignment
+      x-accepts: application/json
+      x-tags:
+      - tag: assignment
+    get:
+      parameters:
+      - description: uuid of the assignment
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/assignment'
+          description: successful operation
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: not found
+      summary: get an assignment by id
+      tags:
+      - assignment
+      x-accepts: application/json
+      x-tags:
+      - tag: assignment
+    put:
+      description: "if an id is supplied in the object, it MUST mach with the one\
+        \ in the url"
+      parameters:
+      - description: uuid of the assignment
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/assignment'
+        required: true
+      responses:
+        "204":
+          description: successful operation
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: invalid input
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: if no (valid) authentication is given
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: |
+            if the reservation already has an assignment with the given role
+            or the employee does not exist
+            or the reservation does not exist
+            or mismatching id in url and object
+      security:
+      - biletado: []
+      summary: add or update an assignment by id
+      tags:
+      - assignment
+      x-content-type: application/json
+      x-accepts: application/json
+      x-tags:
+      - tag: assignment
+  /personal/employees/:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_personal_employees__get_200_response'
+          description: successful operation
+      summary: get all employees
+      tags:
+      - employee
+      x-accepts: application/json
+      x-tags:
+      - tag: employee
+    post:
+      description: "MAY contain a uuid. If so, this method does the same checks as\
+        \ `PUT` does."
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/employee'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/employee'
+          description: |
+            Successful operation of updating an existing employee.
+            This can only happen if a uuid gets passed.
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/employee'
+          description: successful operation of creating a new employee
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: invalid input
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: if no (valid) authentication is given
+      security:
+      - biletado: []
+      summary: add a new employee
+      tags:
+      - employee
+      x-content-type: application/json
+      x-accepts: application/json
+      x-tags:
+      - tag: employee
+  /personal/employees/{id}/:
+    delete:
+      parameters:
+      - description: uuid of the employee
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: successful operation
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: if no (valid) authentication is given
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: deletion not possible because of existing assignments
+      security:
+      - biletado: []
+      summary: delete an employee by id
+      tags:
+      - employee
+      x-accepts: application/json
+      x-tags:
+      - tag: employee
+    get:
+      parameters:
+      - description: uuid of the employee
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/employee'
+          description: successful operation
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: not found
+      summary: get an employee by id
+      tags:
+      - employee
+      x-accepts: application/json
+      x-tags:
+      - tag: employee
+    put:
+      description: "if an id is supplied in the object, it MUST mach with the one\
+        \ in the url"
+      parameters:
+      - description: uuid of the employee
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/employee'
+        required: true
+      responses:
+        "204":
+          description: successful operation
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: invalid input
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: if no (valid) authentication is given
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: mismatching id in url and object
+      security:
+      - biletado: []
+      summary: add or update an employee by id
+      tags:
+      - employee
+      x-content-type: application/json
+      x-accepts: application/json
+      x-tags:
+      - tag: employee
+components:
+  schemas:
+    error:
+      additionalProperties: true
+      description: "used to return error messages. If no message is necessary (e.g.\
+        \ on 404), an empty object is returned."
+      properties:
+        message:
+          type: string
+      type: object
+    employee:
+      description: the representation of an employee
+      example:
+        name: Max Specimeno
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+      properties:
+        id:
+          description: the id of the employee
+          format: uuid
+          type: string
+        name:
+          description: the name of the employee
+          example: Max Specimeno
+          type: string
+      required:
+      - name
+      type: object
+    assignment:
+      description: |
+        the assignment between an employee and a reservation with its role.
+        An assignment must only exist once per reservation and role.
+      example:
+        reservation_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        role: service
+        employee_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+      properties:
+        id:
+          description: the id of the assignment
+          format: uuid
+          type: string
+        employee_id:
+          description: the id of the employee this assignment references
+          format: uuid
+          type: string
+        reservation_id:
+          description: the id of the reservation this assignment references
+          format: uuid
+          type: string
+        role:
+          description: the role which the employee impersonates in this assignment
+          enum:
+          - service
+          - cleanup
+          type: string
+      required:
+      - employee_id
+      - reservation_id
+      - role
+      type: object
+    _personal_status__get_200_response:
+      additionalProperties: true
+      example:
+        authors:
+        - authors
+        - authors
+      properties:
+        authors:
+          items:
+            type: string
+          minItems: 1
+          type: array
+      type: object
+    _personal_assignments__get_200_response:
+      example:
+        assignments:
+        - reservation_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          role: service
+          employee_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - reservation_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          role: service
+          employee_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+      properties:
+        assignments:
+          items:
+            $ref: '#/components/schemas/assignment'
+          minItems: 0
+          type: array
+      type: object
+    _personal_employees__get_200_response:
+      example:
+        employees:
+        - name: Max Specimeno
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - name: Max Specimeno
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+      properties:
+        employees:
+          description: list of all employees
+          items:
+            $ref: '#/components/schemas/employee'
+          minItems: 0
+          type: array
+      type: object
+  securitySchemes:
+    biletado:
+      flows:
+        authorizationCode:
+          authorizationUrl: http://localhost/auth/realms/biletado/protocol/openid-connect/auth
+          scopes: {}
+          tokenUrl: http://localhost/auth/realms/biletado/protocol/openid-connect/token
+      type: oauth2
