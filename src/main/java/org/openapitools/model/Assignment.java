@@ -23,7 +23,7 @@ import javax.annotation.Generated;
 
 @Schema(name = "assignment", description = "the assignment between an employee and a reservation with its role. An assignment must only exist once per reservation and role. ")
 @JsonTypeName("assignment")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2022-11-21T18:24:00.468964Z[Etc/UTC]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2022-11-22T12:08:12.414629Z[Etc/UTC]")
 public class Assignment {
 
   @JsonProperty("id")

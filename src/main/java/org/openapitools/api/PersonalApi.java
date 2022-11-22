@@ -35,7 +35,7 @@ import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2022-11-21T18:24:00.468964Z[Etc/UTC]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2022-11-22T12:08:12.414629Z[Etc/UTC]")
 @Validated
 @Tag(name = "personal", description = "CRUD assignment between employee and reservation")
 public interface PersonalApi {
@@ -48,12 +48,13 @@ public interface PersonalApi {
      * GET /personal/assignments/ : get all personal assignments
      *
      * @param employeeId filter for a given employee (optional)
+     * @param reservationId filter for a given reservation (optional)
      * @return successful operation (status code 200)
      */
     @Operation(
         operationId = "personalAssignmentsGet",
         summary = "get all personal assignments",
-        tags = { "assignment" },
+        tags = { "assignments" },
         responses = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = PersonalAssignmentsGet200Response.class))
@@ -66,7 +67,8 @@ public interface PersonalApi {
         produces = { "application/json" }
     )
     default ResponseEntity<PersonalAssignmentsGet200Response> personalAssignmentsGet(
-        @Parameter(name = "employee_id", description = "filter for a given employee") @Valid @RequestParam(value = "employee_id", required = false) UUID employeeId
+        @Parameter(name = "employee_id", description = "filter for a given employee") @Valid @RequestParam(value = "employee_id", required = false) UUID employeeId,
+        @Parameter(name = "reservation_id", description = "filter for a given reservation") @Valid @RequestParam(value = "reservation_id", required = false) UUID reservationId
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
@@ -93,7 +95,7 @@ public interface PersonalApi {
     @Operation(
         operationId = "personalAssignmentsIdDelete",
         summary = "delete an assignment by id",
-        tags = { "assignment" },
+        tags = { "assignments" },
         responses = {
             @ApiResponse(responseCode = "204", description = "successful operation"),
             @ApiResponse(responseCode = "401", description = "if no (valid) authentication is given", content = {
@@ -130,7 +132,7 @@ public interface PersonalApi {
     @Operation(
         operationId = "personalAssignmentsIdGet",
         summary = "get an assignment by id",
-        tags = { "assignment" },
+        tags = { "assignments" },
         responses = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Assignment.class))
@@ -176,7 +178,7 @@ public interface PersonalApi {
     @Operation(
         operationId = "personalAssignmentsIdPut",
         summary = "add or update an assignment by id",
-        tags = { "assignment" },
+        tags = { "assignments" },
         responses = {
             @ApiResponse(responseCode = "204", description = "successful operation"),
             @ApiResponse(responseCode = "400", description = "invalid input", content = {
@@ -222,7 +224,7 @@ public interface PersonalApi {
     @Operation(
         operationId = "personalAssignmentsPost",
         summary = "add a new assignment",
-        tags = { "assignment" },
+        tags = { "assignments" },
         responses = {
             @ApiResponse(responseCode = "200", description = "Successful operation of updating an existing assignment. This can only happen if a uuid gets passed. ", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Assignment.class))
@@ -275,7 +277,7 @@ public interface PersonalApi {
     @Operation(
         operationId = "personalEmployeesGet",
         summary = "get all employees",
-        tags = { "employee" },
+        tags = { "employees" },
         responses = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = PersonalEmployeesGet200Response.class))
@@ -316,7 +318,7 @@ public interface PersonalApi {
     @Operation(
         operationId = "personalEmployeesIdDelete",
         summary = "delete an employee by id",
-        tags = { "employee" },
+        tags = { "employees" },
         responses = {
             @ApiResponse(responseCode = "204", description = "successful operation"),
             @ApiResponse(responseCode = "401", description = "if no (valid) authentication is given", content = {
@@ -356,7 +358,7 @@ public interface PersonalApi {
     @Operation(
         operationId = "personalEmployeesIdGet",
         summary = "get an employee by id",
-        tags = { "employee" },
+        tags = { "employees" },
         responses = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Employee.class))
@@ -402,7 +404,7 @@ public interface PersonalApi {
     @Operation(
         operationId = "personalEmployeesIdPut",
         summary = "add or update an employee by id",
-        tags = { "employee" },
+        tags = { "employees" },
         responses = {
             @ApiResponse(responseCode = "204", description = "successful operation"),
             @ApiResponse(responseCode = "400", description = "invalid input", content = {
@@ -447,7 +449,7 @@ public interface PersonalApi {
     @Operation(
         operationId = "personalEmployeesPost",
         summary = "add a new employee",
-        tags = { "employee" },
+        tags = { "employees" },
         responses = {
             @ApiResponse(responseCode = "200", description = "Successful operation of updating an existing employee. This can only happen if a uuid gets passed. ", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Employee.class))
@@ -514,7 +516,7 @@ public interface PersonalApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"authors\" : [ \"authors\", \"authors\" ] }";
+                    String exampleString = "{ \"apiVersion\" : \"1.2.3\", \"authors\" : [ \"authors\", \"authors\" ] }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }

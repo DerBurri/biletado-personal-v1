@@ -6,16 +6,16 @@ info:
     name: MIT
     url: http://biletado.gitlab.io/LICENSE.txt
   termsOfService: http://biletado.gitlab.io/
-  title: Biletado services
-  version: 1.0.0
+  title: Biletado personal
+  version: 1.2.0
 servers:
-- description: default biletado persoal api
+- description: default biletado assets api
   url: /api
 tags:
 - description: CRUD employee
-  name: employee
+  name: employees
 - description: CRUD assignment between employee and reservation
-  name: assignment
+  name: assignments
 paths:
   /personal/status/:
     get:
@@ -40,6 +40,15 @@ paths:
           format: uuid
           type: string
         style: form
+      - description: filter for a given reservation
+        explode: true
+        in: query
+        name: reservation_id
+        required: false
+        schema:
+          format: uuid
+          type: string
+        style: form
       responses:
         "200":
           content:
@@ -49,10 +58,10 @@ paths:
           description: successful operation
       summary: get all personal assignments
       tags:
-      - assignment
+      - assignments
       x-accepts: application/json
       x-tags:
-      - tag: assignment
+      - tag: assignments
     post:
       description: "MAY contain a uuid. If so, this method does the same checks as\
         \ `PUT` does."
@@ -102,11 +111,11 @@ paths:
       - biletado: []
       summary: add a new assignment
       tags:
-      - assignment
+      - assignments
       x-content-type: application/json
       x-accepts: application/json
       x-tags:
-      - tag: assignment
+      - tag: assignments
   /personal/assignments/{id}/:
     delete:
       parameters:
@@ -138,10 +147,10 @@ paths:
       - biletado: []
       summary: delete an assignment by id
       tags:
-      - assignment
+      - assignments
       x-accepts: application/json
       x-tags:
-      - tag: assignment
+      - tag: assignments
     get:
       parameters:
       - description: uuid of the assignment
@@ -168,10 +177,10 @@ paths:
           description: not found
       summary: get an assignment by id
       tags:
-      - assignment
+      - assignments
       x-accepts: application/json
       x-tags:
-      - tag: assignment
+      - tag: assignments
     put:
       description: "if an id is supplied in the object, it MUST mach with the one\
         \ in the url"
@@ -220,11 +229,11 @@ paths:
       - biletado: []
       summary: add or update an assignment by id
       tags:
-      - assignment
+      - assignments
       x-content-type: application/json
       x-accepts: application/json
       x-tags:
-      - tag: assignment
+      - tag: assignments
   /personal/employees/:
     get:
       responses:
@@ -236,10 +245,10 @@ paths:
           description: successful operation
       summary: get all employees
       tags:
-      - employee
+      - employees
       x-accepts: application/json
       x-tags:
-      - tag: employee
+      - tag: employees
     post:
       description: "MAY contain a uuid. If so, this method does the same checks as\
         \ `PUT` does."
@@ -280,11 +289,11 @@ paths:
       - biletado: []
       summary: add a new employee
       tags:
-      - employee
+      - employees
       x-content-type: application/json
       x-accepts: application/json
       x-tags:
-      - tag: employee
+      - tag: employees
   /personal/employees/{id}/:
     delete:
       parameters:
@@ -322,10 +331,10 @@ paths:
       - biletado: []
       summary: delete an employee by id
       tags:
-      - employee
+      - employees
       x-accepts: application/json
       x-tags:
-      - tag: employee
+      - tag: employees
     get:
       parameters:
       - description: uuid of the employee
@@ -352,10 +361,10 @@ paths:
           description: not found
       summary: get an employee by id
       tags:
-      - employee
+      - employees
       x-accepts: application/json
       x-tags:
-      - tag: employee
+      - tag: employees
     put:
       description: "if an id is supplied in the object, it MUST mach with the one\
         \ in the url"
@@ -400,11 +409,11 @@ paths:
       - biletado: []
       summary: add or update an employee by id
       tags:
-      - employee
+      - employees
       x-content-type: application/json
       x-accepts: application/json
       x-tags:
-      - tag: employee
+      - tag: employees
 components:
   schemas:
     error:
@@ -468,15 +477,24 @@ components:
     _personal_status__get_200_response:
       additionalProperties: true
       example:
+        apiVersion: 1.2.3
         authors:
         - authors
         - authors
       properties:
         authors:
+          description: List of all authors of this backend.
           items:
             type: string
           minItems: 1
           type: array
+        apiVersion:
+          description: The exact version of the api implemented by this backend.
+          example: 1.2.3
+          pattern: "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\\
+            d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\\
+            +([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"
+          type: string
       type: object
     _personal_assignments__get_200_response:
       example:
