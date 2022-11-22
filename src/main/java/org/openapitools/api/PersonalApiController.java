@@ -34,7 +34,7 @@ import javax.annotation.Generated;
 
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2022-11-22T12:08:12.414629Z[Etc/UTC]")
 @Controller
-@RequestMapping("${openapi.biletadoPersonal.base-path:/api}")
+@RequestMapping("${openapi.biletadoPersonal.base-path:/}")
 public class PersonalApiController implements PersonalApi {
 
     private final NativeWebRequest request;
