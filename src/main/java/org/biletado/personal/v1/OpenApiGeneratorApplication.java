@@ -1,4 +1,4 @@
-package org.openapitools;
+package org.biletado.personal.v1;
 
 import com.fasterxml.jackson.databind.Module;
 import org.openapitools.jackson.nullable.JsonNullableModule;

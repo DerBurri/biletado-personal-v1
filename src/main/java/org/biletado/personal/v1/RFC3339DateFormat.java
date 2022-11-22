@@ -1,4 +1,4 @@
-package org.openapitools;
+package org.biletado.personal.v1;
 
 import com.fasterxml.jackson.databind.util.StdDateFormat;
 

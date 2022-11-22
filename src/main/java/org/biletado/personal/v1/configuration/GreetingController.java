@@ -1,4 +1,4 @@
-package org.openapitools.configuration;
+package org.biletado.personal.v1.configuration;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

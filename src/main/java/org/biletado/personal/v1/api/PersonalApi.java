@@ -3,18 +3,18 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-package org.openapitools.api;
+package org.biletado.personal.v1.api;
 
-import org.openapitools.model.Assignment;
-import org.openapitools.model.Employee;
-import org.openapitools.model.Error;
-import org.openapitools.model.PersonalAssignmentsGet200Response;
-import org.openapitools.model.PersonalEmployeesGet200Response;
-import org.openapitools.model.PersonalStatusGet200Response;
+import org.biletado.personal.v1.model.Assignment;
+import org.biletado.personal.v1.model.Employee;
+import org.biletado.personal.v1.model.Error;
+import org.biletado.personal.v1.model.PersonalAssignmentsGet200Response;
+import org.biletado.personal.v1.model.PersonalEmployeesGet200Response;
+import org.biletado.personal.v1.model.PersonalStatusGet200Response;
+
 import java.util.UUID;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -26,12 +26,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.NativeWebRequest;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import javax.validation.constraints.*;
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 

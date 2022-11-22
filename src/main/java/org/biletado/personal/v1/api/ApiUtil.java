@@ -1,4 +1,4 @@
-package org.openapitools.api;
+package org.biletado.personal.v1.api;
 
 import org.springframework.web.context.request.NativeWebRequest;
 
