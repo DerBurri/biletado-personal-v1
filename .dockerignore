@@ -1,2 +1,6 @@
 /.idea/
+/.mvn/
 /target/
+/.openapi-generator/
+/docs/
+
