@@ -516,13 +516,13 @@ public interface PersonalApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"apiVersion\" : \"1.2.3\", \"authors\" : [ \"authors\", \"authors\" ] }";
+                    String exampleString = "{ \"apiVersion\" : \"1.2.3\", \"authors\" : [ \"Maximilian Burr\", \"Valerio Cocco\", \"Daniel Rittershofer\" ] }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
             }
         });
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<>(HttpStatus.OK);
 
     }
 
