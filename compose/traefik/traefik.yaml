@@ -1,0 +1,21 @@
+entryPoints:
+  web:
+    address: :80
+
+log:
+  level: DEBUG
+api:
+  insecure: true
+
+accessLog: {}
+providers:
+  file:
+    directory: /etc/traefik/traefik.conf.d/
+    watch: true
+
+tracing:
+  jaeger:
+    samplingServerURL: http://jaeger:5778/sampling
+    localAgentHostPort: jaeger:6831
+    # is this https://github.com/traefik/traefik/issues/7855 ?
+    #traceContextHeaderName: biletado-trace-id

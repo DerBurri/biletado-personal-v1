@@ -1,0 +1,5 @@
+postgres:5432:postgres:postgres:postgres
+postgres:5432:keycloak:postgres:postgres
+postgres:5432:assets:postgres:postgres
+postgres:5432:reservations:postgres:postgres
+postgres:5432:personal:postgres:postgres

@@ -1,0 +1,12 @@
+http:
+  routers:
+    frontend:
+      entryPoints:
+        - web
+      rule: PathPrefix(`/`)
+      service: frontend
+  services:
+    frontend:
+      loadBalancer:
+        servers:
+          - url: http://frontend:80

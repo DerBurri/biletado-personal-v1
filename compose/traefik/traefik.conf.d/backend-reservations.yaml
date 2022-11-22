@@ -1,0 +1,17 @@
+http:
+  routers:
+    backend-reservations:
+      entryPoints:
+        - web
+      rule: PathPrefix(`/api/reservations`)
+      middlewares:
+        # middlewares are defined in backend.yaml
+        - api-strip-prefix
+        - api-headers
+      service: backend-reservations
+  services:
+    backend-reservations:
+      loadBalancer:
+        servers:
+          - url: http://backend-reservations:9000
+          #- url: http://host.docker.internal:9000

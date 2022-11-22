@@ -1,0 +1,12 @@
+http:
+  routers:
+    apidocs:
+      entryPoints:
+        - web
+      rule: PathPrefix(`/apidocs`)
+      service: apidocs
+  services:
+    apidocs:
+      loadBalancer:
+        servers:
+          - url: http://apidocs:8080

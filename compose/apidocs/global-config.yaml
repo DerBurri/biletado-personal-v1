@@ -1,0 +1,20 @@
+openapi: "3.0.0"
+info:
+  title: ""
+  version: ""
+paths: {}
+
+# the part above is only to meet minimal requirements for a valid openapi-definition
+
+servers:
+  - url: /api
+    description: default biletado assets api
+components:
+  securitySchemes:
+    biletado:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: http://localhost/auth/realms/biletado/protocol/openid-connect/auth
+          tokenUrl: http://localhost/auth/realms/biletado/protocol/openid-connect/token
+          scopes: {}

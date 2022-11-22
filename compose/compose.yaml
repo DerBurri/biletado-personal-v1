@@ -1,0 +1,148 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:${POSTGRES_IMAGE_VERSION}
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    expose:
+      - "5432"
+    ports:
+      # necessary for local backend development
+      - "5432:5432"
+    volumes:
+      - ./postgres/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:Z
+
+  keycloak:
+    depends_on:
+      - postgres
+    environment:
+      DB_VENDOR: postgres
+      DB_ADDR: postgres
+      DB_DATABASE: keycloak
+      DB_USER: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      KEYCLOAK_USER: ${KEYCLOAK_USER}
+      KEYCLOAK_PASSWORD: ${KEYCLOAK_PASSWORD}
+      KEYCLOAK_IMPORT: /tmp/realm-export.json
+    image: jboss/keycloak:${KEYCLOAK_IMAGE_VERSION}
+    expose:
+      - "8080"
+    restart: unless-stopped
+    volumes:
+      - ./keycloak/realm-export.json:/tmp/realm-export.json:Z
+
+  frontend:
+    image: ${FRONTEND_IMAGE_REPOSITORY}:${FRONTEND_IMAGE_VERSION}
+    expose:
+      - "80"
+    restart: unless-stopped
+    volumes:
+      - ./frontend/config.json:/usr/share/nginx/html/assets/config.json:Z
+
+  backend:
+    image: ${BACKEND_JWT_IMAGE_REPOSITORY}:${BACKEND_JWT_IMAGE_VERSION}
+    environment:
+      KEYCLOAK_HOST: "traefik"
+      KEYCLOAK_REALM: "biletado"
+      JAEGER_TRACECONTEXTHEADERNAME: ${JAEGER_TRACECONTEXTHEADERNAME}
+    expose:
+      - "9000"
+    restart: unless-stopped
+
+  backend-assets:
+    image: ${BACKEND_ASSETS_IMAGE_REPOSITORY}:${BACKEND_ASSETS_IMAGE_VERSION}
+    depends_on:
+      - postgres
+    environment:
+      KEYCLOAK_HOST: "traefik"
+      KEYCLOAK_REALM: "biletado"
+      JAEGER_TRACECONTEXTHEADERNAME: ${JAEGER_TRACECONTEXTHEADERNAME}
+      POSTGRES_ASSETS_USER: ${POSTGRES_USER}
+      POSTGRES_ASSETS_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_ASSETS_DBNAME: "assets"
+      POSTGRES_ASSETS_HOST: "postgres"
+      POSTGRES_ASSETS_PORT: "5432"
+    expose:
+      - "9000"
+    restart: unless-stopped
+
+  backend-reservations:
+    image: ${BACKEND_RESERVATIONS_IMAGE_REPOSITORY}:${BACKEND_RESERVATIONS_IMAGE_VERSION}
+    depends_on:
+      - postgres
+    environment:
+      KEYCLOAK_HOST: "traefik"
+      KEYCLOAK_REALM: "biletado"
+      JAEGER_TRACECONTEXTHEADERNAME: ${JAEGER_TRACECONTEXTHEADERNAME}
+      POSTGRES_RESERVATIONS_USER: ${POSTGRES_USER}
+      POSTGRES_RESERVATIONS_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_RESERVATIONS_DBNAME: "reservations"
+      POSTGRES_RESERVATIONS_HOST: "postgres"
+      POSTGRES_RESERVATIONS_PORT: "5432"
+    expose:
+      - "9000"
+    restart: unless-stopped
+
+  traefik:
+    image: traefik:${TRAEFIK_IMAGE_VERSION}
+    ports:
+      - "8080:8080"
+      - "80:80"
+    restart: unless-stopped
+    volumes:
+      - ./traefik/traefik.yaml:/etc/traefik/traefik.yaml:Z
+      - ./traefik/traefik.conf.d/:/etc/traefik/traefik.conf.d/:Z
+    extra_hosts:
+    # necessary on linux to access local backends through traefik via e.g. `url: http://host.docker.internal:9000/`
+     - host.docker.internal:host-gateway
+
+  jaeger:
+    image: jaegertracing/all-in-one:${JAEGER_IMAGE_VERSION}
+    environment:
+      QUERY_BASE_PATH: "/jaeger"
+    expose:
+      - "5778"
+      - "6831/udp"
+      - "16686"
+    restart: unless-stopped
+
+  pgadmin4:
+    restart: unless-stopped
+    image: dpage/pgadmin4
+    ports:
+      - "5433:80"
+    volumes:
+      - ./pgadmin4/servers.json:/pgadmin4/servers.json:Z
+      - ./pgadmin4/pgpassfile.txt:/tmp/pgpassfile.txt:Z
+    environment:
+      PGADMIN_DEFAULT_PASSWORD: postgres
+      PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
+      # not possible in desktop-mode
+      #SCRIPT_NAME: /pgadmin4
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: "False"
+    entrypoint: >
+      /bin/sh -c "
+      mkdir -p -m 700 /var/lib/pgadmin/storage/pgadmin4_pgadmin.org/;
+      chown -R pgadmin:pgadmin /var/lib/pgadmin/storage/pgadmin4_pgadmin.org/;
+      cp /tmp/pgpassfile.txt /var/lib/pgadmin/storage/pgadmin4_pgadmin.org/pgpassfile.txt;
+      chown pgadmin:pgadmin /var/lib/pgadmin/storage/pgadmin4_pgadmin.org/pgpassfile.txt;
+      chmod 0600 /var/lib/pgadmin/storage/pgadmin4_pgadmin.org/pgpassfile.txt;
+      /entrypoint.sh;
+      "
+    depends_on:
+      - postgres
+
+  apidocs:
+    restart: unless-stopped
+    image: registry.gitlab.com/biletado/apidocs:${APIDOCS_IMAGE_VERSION}
+    expose:
+      - "8080"
+    environment:
+      BASE_URL: /apidocs
+      OAUTH_CLIENT_ID: angular
+    volumes:
+      - ./apidocs/global-config.yaml:/tmp/global-config.yaml:Z
+      - ./apidocs/docker-entrypoint.d/40-merge-global-config.sh:/docker-entrypoint.d/40-merge-global-config.sh:Z
