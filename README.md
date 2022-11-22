@@ -24,10 +24,13 @@ Change default port value in application.properties
 
 ## Local
 
-Build:
+### Build
 * `./build.sh`
 * `docker build -t biletado-personal ./`
 
-Run: 
+### Run
 * `./run.sh`
 * `docker run -p 8080:8080 biletado-personal:latest`
+
+### Build & Run
+`./build_and_run.sh`
