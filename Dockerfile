@@ -20,6 +20,6 @@ RUN mvn package
 FROM openjdk:18 as biletado-personal
 
 # copy jar from build container
-COPY --from=build-biletado-personal /build/target/openapi-spring-1.0.0.jar /
+COPY --from=build-biletado-personal /build/target/openapi-spring-*.jar /
 
-ENTRYPOINT java -jar /openapi-spring-1.0.0.jar
+ENTRYPOINT java -jar /openapi-spring-*.jar
