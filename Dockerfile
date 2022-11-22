@@ -1,10 +1,9 @@
-FROM maven:3-openjdk-18 as build-niletado-personal
-
-RUN echo "hello world"
+FROM maven:3-openjdk-18 as build-biletado-personal
 
 COPY . /
 
-RUN ls -la
+# debug
+#RUN ls -la
 
 RUN mvn package
 
@@ -12,8 +11,8 @@ RUN mvn package
 #RUN ls -la
 #RUN ls -la target
 
-FROM openjdk:18 as niletado-personal
+FROM openjdk:18 as biletado-personal
 
-COPY --from=build-niletado-personal /target/openapi-spring-1.0.0.jar /
+COPY --from=build-biletado-personal /target/openapi-spring-1.0.0.jar /
 
 ENTRYPOINT java -jar /openapi-spring-1.0.0.jar
