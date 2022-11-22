@@ -11,12 +11,9 @@ This is an example of building a OpenAPI-enabled server in Java using the Spring
 The underlying library integrating OpenAPI to Spring Boot is [springdoc](https://springdoc.org).
 Springdoc will generate an OpenAPI v3 specification based on the generated Controller and Model classes.
 The specification is available to download using the following url:
-http://localhost:8080/v3/api-docs/
+<http://localhost:9000/v3/api-docs/>
 
 Start your server as a simple java application
-
-You can view the api documentation in swagger-ui by pointing to
-http://localhost:8080/swagger-ui.html
 
 Change default port value in application.properties
 
@@ -42,3 +39,8 @@ docker run --rm -v "${PWD}:/local" openapitools/openapi-generator-cli generate \
 
 ### Build & Run
 `./build_and_run.sh`
+
+# How to use
+* Swagger UI of backend: <http://localhost:9000/swagger-ui/index.html>
+
+
