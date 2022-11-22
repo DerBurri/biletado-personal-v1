@@ -19,3 +19,15 @@ You can view the api documentation in swagger-ui by pointing to
 http://localhost:8080/swagger-ui.html
 
 Change default port value in application.properties
+
+# Build and Run
+
+## Local
+
+Build:
+* `./build.sh`
+* `docker build -t biletado-personal ./`
+
+Run: 
+* `./run.sh`
+* `docker run -p 8080:8080 biletado-personal:latest`
