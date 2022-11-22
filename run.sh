@@ -1,3 +1,3 @@
 #!/bin/sh
 
-docker run -p 8080:8080 niletado-personal:latest
+docker run -p 8080:8080 biletado-personal:latest

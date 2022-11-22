@@ -1,4 +1,4 @@
 #!/bin/sh
 
-docker build -t niletado-personal ./
+docker build -t biletado-personal ./
 
