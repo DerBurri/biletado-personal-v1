@@ -53,8 +53,6 @@ jobs:
       with:
         images: |
             ghcr.io/biletado-personal-v1
-        tags: |
-          type=semver
     - name: Build and push Docker image
       uses: docker/build-push-action@v3.2.0
       with:
