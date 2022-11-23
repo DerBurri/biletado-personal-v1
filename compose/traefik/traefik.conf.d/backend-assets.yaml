@@ -1,0 +1,17 @@
+http:
+  routers:
+    backend-assets:
+      entryPoints:
+        - web
+      rule: PathPrefix(`/api/assets`)
+      middlewares:
+        # middlewares are defined in backend.yaml
+        - api-strip-prefix
+        - api-headers
+      service: backend-assets
+  services:
+    backend-assets:
+      loadBalancer:
+        servers:
+          - url: http://backend-assets:9000
+          #- url: http://host.docker.internal:9000

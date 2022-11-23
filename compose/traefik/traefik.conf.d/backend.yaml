@@ -1,0 +1,36 @@
+http:
+  routers:
+    backend:
+      entryPoints:
+        - web
+      rule: PathPrefix(`/api`)
+      middlewares:
+        - api-strip-prefix
+        - api-headers
+      service: backend
+  middlewares:
+    api-strip-prefix:
+      stripPrefix:
+        prefixes:
+          - '/api'
+    api-headers:
+      headers:
+        accessControlAllowMethods:
+          - GET
+          - OPTIONS
+          - PUT
+          - DELETE
+        accessControlAllowCredentials: true
+        accessControlAllowOriginList:
+          - http://localhost
+          - http://localhost:4200
+        accessControlAllowHeaders:
+          - "Authorization"
+        accessControlMaxAge: 100
+        addVaryHeader: true
+  services:
+    backend:
+      loadBalancer:
+        servers:
+          - url: http://backend:9000
+          #- url: http://host.docker.internal:9000

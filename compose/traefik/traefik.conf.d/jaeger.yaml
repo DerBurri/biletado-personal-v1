@@ -1,0 +1,12 @@
+http:
+  routers:
+    jaeger:
+      entryPoints:
+        - web
+      rule: PathPrefix(`/jaeger`)
+      service: jaeger
+  services:
+    jaeger:
+      loadBalancer:
+        servers:
+          - url: http://jaeger:16686
