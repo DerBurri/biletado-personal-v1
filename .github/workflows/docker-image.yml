@@ -52,8 +52,7 @@ jobs:
       uses: docker/metadata-action@v4.1.1
       with:
         images: |
-            ghcr.io/biletado-personal-v1
-            biletado-personal-v1
+            ghcr.io/org/biletado-personal-v1
         tags: |
             type=schedule
             type=ref,event=branch
