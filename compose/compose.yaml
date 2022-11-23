@@ -86,7 +86,9 @@ services:
     restart: unless-stopped
 
   backend-personal:
-    image: biletado-personal:latest
+    image: biletado-personal:latest # local image build with /build.sh
+#    image: ghcr.io/derburri/biletado-personal-v1:latest
+#    image: ${BACKEND_PERSONAL_IMAGE_REPOSITORY}:${BACKEND_PERSONAL_IMAGE_VERSION}
     depends_on:
       - postgres
     environment:
