@@ -54,6 +54,15 @@ jobs:
         images: |
             ghcr.io/biletado-personal-v1
             biletado-personal-v1
+        tags: |
+            type=schedule
+            type=ref,event=branch
+            type=ref,event=tag
+            type=ref,event=pr
+            type=semver,pattern=v{{version}}
+            type=semver,pattern=v{{major}}.{{minor}}
+            type=semver,pattern=v{{major}}
+            type=sha
 
     - name: Build and push Docker image
       uses: docker/build-push-action@v3.2.0
