@@ -7,9 +7,9 @@ on:
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
-    
+    tags:
+      - 'v*'
 env:
-
     REGISTRY: ghcr.io
 
 jobs:
@@ -48,19 +48,20 @@ jobs:
         
         
     - name: Extract metadata (tags, labels) for Docker
-      
       uses: docker/metadata-action@v4.1.1
       with:
         images: |
             ghcr.io/biletado-personal-v1
+            biletado-personal-v1
+
     - name: Build and push Docker image
       uses: docker/build-push-action@v3.2.0
       with:
         context: .
-        push: true
-        tags: ${{steps.meta.outputs.tags }}
-        labels: ${{ steps.meta.outputs.lalbels }}
-      
+        push: ${{ github.event_name != 'pull_request' }}
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+
    
       
       
