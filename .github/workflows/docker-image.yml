@@ -8,8 +8,10 @@ on:
   pull_request:
     branches: [ "master" ]
     
-env: 
+env:
+
     REGISTRY: ghcr.io
+
 jobs:
 
   build:
@@ -48,7 +50,11 @@ jobs:
     - name: Extract metadata (tags, labels) for Docker
       
       uses: docker/metadata-action@v4.1.1
-    
+      with:
+        images: |
+            ghcr.io/biletado-personal-v1
+        tags: |
+          type=semver
     - name: Build and push Docker image
       uses: docker/build-push-action@v3.2.0
       with:
