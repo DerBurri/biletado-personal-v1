@@ -5,10 +5,14 @@ on:
     types: [published]
   push:
     branches: [ "master" ]
+    paths:
+      - 'docs/**'
+      - 'pom.xml'
   pull_request:
     branches: [ "master" ]
     tags:
       - 'v*'
+
 env:
     REGISTRY: ghcr.io
 
