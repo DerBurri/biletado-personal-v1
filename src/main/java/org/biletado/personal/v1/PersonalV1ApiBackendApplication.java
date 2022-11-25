@@ -17,14 +17,14 @@ public class PersonalV1ApiBackendApplication {
             "POSTGRES_PERSONAL_USER", "POSTGRES_PERSONAL_PASSWORD"
     };
 
-    public static HashMap<String, String> EnvironmentVariables = new HashMap<>();
+    public static HashMap<String, String> ConfigVariables = new HashMap<>();
 
 
     public static void main(String[] args) {
         System.out.println("READING ENVIRONMENT VARIABLES");
         for (String environmentVariableName : EnvironmentVariableNames) {
             String val = System.getenv(environmentVariableName);
-            EnvironmentVariables.put(environmentVariableName, val);
+            ConfigVariables.put(environmentVariableName, val);
             System.out.println(environmentVariableName + ": " + val);
         }
 
