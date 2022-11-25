@@ -1,0 +1,17 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="PersonalV1ApiBackendApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <option name="ACTIVE_PROFILES" />
+    <envs>
+      <env name="POSTGRES_PERSONAL_USER" value="postgres" />
+      <env name="POSTGRES_PERSONAL_PASSWORD" value="postgres" />
+      <env name="POSTGRES_PERSONAL_DBNAME" value="personal" />
+      <env name="POSTGRES_PERSONAL_HOST" value="localhost" />
+      <env name="POSTGRES_PERSONAL_PORT" value="5432" />
+    </envs>
+    <module name="myproject" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="org.biletado.personal.v1.PersonalV1ApiBackendApplication" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
