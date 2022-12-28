@@ -3,10 +3,15 @@ package org.biletado.personal.v1.model;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+
+import java.util.Set;
 import java.util.UUID;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import io.swagger.v3.oas.annotations.media.Schema;
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
 
 
 import javax.annotation.Generated;
@@ -16,15 +21,25 @@ import javax.annotation.Generated;
  */
 
 @Schema(name = "employee", description = "the representation of an employee")
+@Entity
+@Table(name = "employees")
 @JsonTypeName("employee")
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2022-11-22T12:08:12.414629Z[Etc/UTC]")
 public class Employee {
 
   @JsonProperty("id")
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name="id")
   private UUID id;
 
   @JsonProperty("name")
+  @Column(name="name")
   private String name;
+
+  @OneToMany(mappedBy = "id")
+  Set<Assignment> assignments;
+
 
   public Employee id(UUID id) {
     this.id = id;
@@ -41,6 +56,11 @@ public class Employee {
     return id;
   }
 
+  /**
+  * set the id of the employee
+  * @param id
+  *
+ */
   public void setId(UUID id) {
     this.id = id;
   }
