@@ -70,7 +70,7 @@ public interface PersonalApi {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                     String exampleString = "{ \"assignments\" : [ { \"reservation_id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"role\" : \"service\", \"employee_id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }, { \"reservation_id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"role\" : \"service\", \"employee_id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" } ] }";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    ApiUtil.setStringResponse(request, "application/json", exampleString);
                     break;
                 }
             }
@@ -141,7 +141,7 @@ public interface PersonalApi {
     @RequestMapping(
         method = RequestMethod.GET,
         value = "/personal/assignments/{id}/",
-        produces = { "application/json" }
+        produces = { MediaType.APPLICATION_JSON_VALUE }
     )
     default ResponseEntity<Assignment> personalAssignmentsIdGet(
         @Parameter(name = "id", description = "uuid of the assignment", required = true) @PathVariable("id") UUID id
@@ -150,7 +150,7 @@ public interface PersonalApi {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                     String exampleString = "{ \"reservation_id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"role\" : \"service\", \"employee_id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    ApiUtil.setStringResponse(request, "application/json", exampleString);
                     break;
                 }
             }
@@ -255,7 +255,7 @@ public interface PersonalApi {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                     String exampleString = "{ \"reservation_id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"role\" : \"service\", \"employee_id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    ApiUtil.setStringResponse(request, "application/json", exampleString);
                     break;
                 }
             }
@@ -292,7 +292,7 @@ public interface PersonalApi {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                     String exampleString = "{ \"employees\" : [ { \"name\" : \"Max Specimeno\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }, { \"name\" : \"Max Specimeno\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" } ] }";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    ApiUtil.setStringResponse(request, "application/json", exampleString);
                     break;
                 }
             }
@@ -376,7 +376,7 @@ public interface PersonalApi {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                     String exampleString = "{ \"name\" : \"Max Specimeno\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    ApiUtil.setStringResponse(request, "application/json", exampleString);
                     break;
                 }
             }
@@ -477,7 +477,7 @@ public interface PersonalApi {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                     String exampleString = "{ \"name\" : \"Max Specimeno\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    ApiUtil.setStringResponse(request, "application/json", exampleString);
                     break;
                 }
             }
@@ -513,7 +513,7 @@ public interface PersonalApi {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                     String exampleString = "{ \"apiVersion\" : \"1.2.3\", \"authors\" : [ \"Maximilian Burr\", \"Valerio Cocco\", \"Daniel Rittershofer\" ] }";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    ApiUtil.setStringResponse(request, "application/json", exampleString);
                     break;
                 }
             }
