@@ -51,19 +51,19 @@ public class PersonalApiController implements PersonalApi {
 
     @Override
     public ResponseEntity<Employee> personalEmployeesIdGet(UUID id) {
-        Employee employeeOptional = employees.findById(id).orElse(null);
-        if (employeeOptional == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        Employee employee = employees.findById(id).orElse(null);
+        if (employee == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         getRequest().ifPresent(request ->
         {
-            ApiUtil.setEntityJsonResponse(request, employeeOptional);
+            ApiUtil.setEntityJsonResponse(request, employee);
         });
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<Void> personalEmployeesIdDelete(UUID id) {
-        Employee employeeOptional = employees.findById(id).orElse(null);
-        if (employeeOptional == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        Employee employee = employees.findById(id).orElse(null);
+        if (employee == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         employees.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
         // todo 401 if no (valid) authentication is given
@@ -84,8 +84,7 @@ public class PersonalApiController implements PersonalApi {
     public ResponseEntity<PersonalAssignmentsGet200Response> personalAssignmentsGet(UUID employeeId, UUID reservationId) {
         getRequest().ifPresent(request ->
         {
-            Iterable<Assignment> assignmentIterable = assignments.findAll();
-            ApiUtil.setEntityJsonResponse(request, assignmentIterable);
+            ApiUtil.setEntityJsonResponse(request, assignments.findAll());
         });
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -103,9 +102,12 @@ public class PersonalApiController implements PersonalApi {
 
     @Override
     public ResponseEntity<Void> personalAssignmentsIdDelete(UUID id) {
-        return PersonalApi.super.personalAssignmentsIdDelete(id);
+        Assignment assignment = assignments.findById(id).orElse(null);
+        if (assignment == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        employees.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+        // todo 401 if no (valid) authentication is given
     }
-
 
     @Override
     public ResponseEntity<Void> personalAssignmentsIdPut(UUID id, Assignment assignment) {
