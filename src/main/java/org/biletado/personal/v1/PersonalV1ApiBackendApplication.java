@@ -1,33 +1,22 @@
 package org.biletado.personal.v1;
 
 import com.fasterxml.jackson.databind.Module;
+import org.biletado.personal.v1.model.Assignment;
+import org.biletado.personal.v1.model.Employee;
+import org.biletado.personal.v1.repository.AssignmentRepository;
 import org.openapitools.jackson.nullable.JsonNullableModule;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 
-import java.util.HashMap;
-
 @SpringBootApplication
 @ComponentScan(basePackages = {"org.biletado.personal.v1", "org.biletado.personal.v1.api", "org.biletado.personal.v1.configuration"})
+@EntityScan(basePackages ={"org.biletado.personal.v1.model"})
 public class PersonalV1ApiBackendApplication {
-    public static String[] EnvironmentVariableNames = new String[]{
-            "POSTGRES_PERSONAL_HOST", "POSTGRES_PERSONAL_PORT", "POSTGRES_PERSONAL_DBNAME",
-            "POSTGRES_PERSONAL_USER", "POSTGRES_PERSONAL_PASSWORD"
-    };
-
-    public static HashMap<String, String> ConfigVariables = new HashMap<>();
-
 
     public static void main(String[] args) {
-        System.out.println("READING ENVIRONMENT VARIABLES");
-        for (String environmentVariableName : EnvironmentVariableNames) {
-            String val = System.getenv(environmentVariableName);
-            ConfigVariables.put(environmentVariableName, val);
-            System.out.println(environmentVariableName + ": " + val);
-        }
-
         System.out.println("\n\n STARTING SPRING BOOT SERVER");
         SpringApplication.run(PersonalV1ApiBackendApplication.class, args);
     }
@@ -36,5 +25,6 @@ public class PersonalV1ApiBackendApplication {
     public Module jsonNullableModule() {
         return new JsonNullableModule();
     }
+
 
 }
