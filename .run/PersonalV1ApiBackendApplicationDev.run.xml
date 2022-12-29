@@ -7,6 +7,7 @@
       <env name="POSTGRES_PERSONAL_DBNAME" value="personal" />
       <env name="POSTGRES_PERSONAL_HOST" value="localhost" />
       <env name="POSTGRES_PERSONAL_PORT" value="5432" />
+      <env name="BACKEND_URL" value="localhost/api" />
     </envs>
     <module name="openapi-spring" />
     <option name="SPRING_BOOT_MAIN_CLASS" value="org.biletado.personal.v1.PersonalV1ApiBackendApplication" />

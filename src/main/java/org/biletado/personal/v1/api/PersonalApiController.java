@@ -1,10 +1,7 @@
 package org.biletado.personal.v1.api;
 
 
-import org.biletado.personal.v1.model.Assignment;
-import org.biletado.personal.v1.model.Employee;
-import org.biletado.personal.v1.model.PersonalAssignmentsGet200Response;
-import org.biletado.personal.v1.model.PersonalEmployeesGet200Response;
+import org.biletado.personal.v1.model.*;
 import org.biletado.personal.v1.repository.AssignmentRepository;
 import org.biletado.personal.v1.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.NativeWebRequest;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import javax.annotation.Generated;
@@ -27,6 +25,9 @@ public class PersonalApiController implements PersonalApi {
 
     private final NativeWebRequest request;
 
+
+    @Autowired
+    ReservationsCaller reservationsCaller;
     @Autowired
     AssignmentRepository assignments;
     @Autowired
@@ -179,7 +180,7 @@ public class PersonalApiController implements PersonalApi {
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
         // todo api call reservations
-
+        List<Reservation> reservations = reservationsCaller.getReservations();
 
         try {
             getRequest().ifPresent(request ->
