@@ -78,7 +78,7 @@ public class PersonalApiController implements PersonalApi {
 
     @Override
     public ResponseEntity<Void> personalEmployeesIdPut(UUID id, Employee employee) {
-        if (id != employee.getId()) {
+        if (!id.equals(employee.getId())) {
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
         Employee employeeFromDb = employees.findById(id).orElse(null);
@@ -146,7 +146,7 @@ public class PersonalApiController implements PersonalApi {
 
     @Override
     public ResponseEntity<Void> personalAssignmentsIdPut(UUID id, Assignment assignment) {
-        if (id != assignment.getId()) {
+        if (id.equals(assignment.getId())) {
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
         Assignment assignmentFromDb = assignments.findById(id).orElse(null);
