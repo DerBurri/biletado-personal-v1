@@ -68,9 +68,8 @@ public class PersonalApiController implements PersonalApi {
         if (employee == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         try {
             employees.deleteById(id);
-        }
-        catch (DataAccessException e)
-        {
+        } catch (DataAccessException e) {
+            // deletion not possible because of existing assignments
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -79,12 +78,37 @@ public class PersonalApiController implements PersonalApi {
 
     @Override
     public ResponseEntity<Void> personalEmployeesIdPut(UUID id, Employee employee) {
-        return PersonalApi.super.personalEmployeesIdPut(id, employee);
+        if (id != employee.getId()) {
+            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+        Employee employeeFromDb = employees.findById(id).orElse(null);
+        if (employeeFromDb == null) {
+            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+        try {
+            employees.save(employee);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        // todo 401 if no (valid) authentication is given
     }
 
     @Override
     public ResponseEntity<Employee> personalEmployeesPost(Employee employee) {
-        return PersonalApi.super.personalEmployeesPost(employee);
+        Employee eFromDb = employees.findById(employee.getId()).orElse(null);
+        try {
+            getRequest().ifPresent(request ->
+            {
+                ApiUtil.setEntityJsonResponse(request, employees.save(employee));
+            });
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+        if (eFromDb == null) {
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Override
@@ -113,9 +137,7 @@ public class PersonalApiController implements PersonalApi {
         if (assignment == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         try {
             employees.deleteById(id);
-        }
-        catch (DataAccessException e)
-        {
+        } catch (DataAccessException e) {
             //Placeholder for DataAccessException
         }
         return new ResponseEntity<>(HttpStatus.OK);
@@ -124,11 +146,52 @@ public class PersonalApiController implements PersonalApi {
 
     @Override
     public ResponseEntity<Void> personalAssignmentsIdPut(UUID id, Assignment assignment) {
-        return PersonalApi.super.personalAssignmentsIdPut(id, assignment);
+        if (id != assignment.getId()) {
+            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+        Assignment assignmentFromDb = assignments.findById(id).orElse(null);
+        if (assignmentFromDb == null) {
+            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+        try {
+            assignments.save(assignment);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        // todo 401 if no (valid) authentication is given
     }
 
     @Override
     public ResponseEntity<Assignment> personalAssignmentsPost(Assignment assignment) {
-        return PersonalApi.super.personalAssignmentsPost(assignment);
+        Assignment aFromDb = assignments.findById(assignment.getId()).orElse(null);
+
+        // 422 if the reservation already has an assignment with the given role
+        Iterable<Assignment> allAssignments = assignments.findAll();
+        for (Assignment ass : allAssignments) {
+            if (ass.getReservationId() == assignment.getReservationId() && ass.getRole() == assignment.getRole()) {
+                return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+            }
+        }
+
+        // 422 if employee does not exist or the reservation does not exist
+        if (employees.findById(assignment.getId()).orElse(null) == null) {
+            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+        // todo api call reservations
+
+
+        try {
+            getRequest().ifPresent(request ->
+            {
+                ApiUtil.setEntityJsonResponse(request, assignments.save(assignment));
+            });
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+        if (aFromDb == null) {
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
