@@ -13,7 +13,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import org.hibernate.cfg.annotations.EntityBinder;
 
 
 import javax.annotation.Generated;
@@ -35,20 +34,19 @@ public class Assignment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-/*
-  @JsonProperty("employee_id")
-  @Column(name="employee_id")
-  private UUID employeeId;
-*/
+
+    @JsonProperty("employee_id")
+    @Column(name = "employee_id")
+    private UUID employeeId;
 
 
     @JsonProperty("reservation_id")
     @Column(name = "reservation_id")
     private UUID reservationId;
 
-    @ManyToOne
-    @JoinColumn(name = "employee_id")
-    private Employee employee;
+//    @ManyToOne
+//    @JoinColumn(name = "employee_id")
+//    private Employee employee;
 
     /**
      * the role which the employee impersonates in this assignment
@@ -91,10 +89,10 @@ public class Assignment {
     private RoleEnum role;
 
 
-    public Assignment id(UUID id) {
-        this.id = id;
-        return this;
-    }
+//    public Assignment id(UUID id) {
+//        this.id = id;
+//        return this;
+//    }
 
     /**
      * the id of the assignment
@@ -111,10 +109,10 @@ public class Assignment {
         this.id = id;
     }
 
-    public Assignment employeeId(UUID employeeId) {
-        this.employee.id(employeeId);
-        return this;
-    }
+//    public Assignment employeeId(UUID employeeId) {
+//        this.employee.id(employeeId);
+//        return this;
+//    }
 
     /**
      * the id of the employee this assignment references
@@ -125,17 +123,19 @@ public class Assignment {
     @Valid
     @Schema(name = "employee_id", description = "the id of the employee this assignment references", required = true)
     public UUID getEmployeeId() {
-        return employee.getId();
+        return employeeId;
+//        return employee.getId();
     }
 
     public void setEmployeeId(UUID employeeId) {
-        employee.setId(employeeId);
+        this.employeeId = employeeId;
+//        employee.setId(employeeId);
     }
 
-    public Assignment reservationId(UUID reservationId) {
-        this.reservationId = reservationId;
-        return this;
-    }
+//    public Assignment reservationId(UUID reservationId) {
+//        this.reservationId = reservationId;
+//        return this;
+//    }
 
     /**
      * the id of the reservation this assignment references
@@ -153,10 +153,10 @@ public class Assignment {
         this.reservationId = reservationId;
     }
 
-    public Assignment role(RoleEnum role) {
-        this.role = role;
-        return this;
-    }
+//    public Assignment role(RoleEnum role) {
+//        this.role = role;
+//        return this;
+//    }
 
     /**
      * the role which the employee impersonates in this assignment
@@ -183,14 +183,14 @@ public class Assignment {
         }
         Assignment assignment = (Assignment) o;
         return Objects.equals(this.id, assignment.id) &&
-                Objects.equals(this.employee.getId(), assignment.getEmployeeId()) &&
+                Objects.equals(employeeId, assignment.getEmployeeId()) &&
                 Objects.equals(this.reservationId, assignment.reservationId) &&
                 Objects.equals(this.role, assignment.role);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, employee.getId(), reservationId, role);
+        return Objects.hash(id, employeeId, reservationId, role);
     }
 
     @Override
@@ -198,7 +198,7 @@ public class Assignment {
         StringBuilder sb = new StringBuilder();
         sb.append("class Assignment {\n");
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
-        sb.append("    employeeId: ").append(toIndentedString(employee.getId())).append("\n");
+        sb.append("    employeeId: ").append(toIndentedString(employeeId)).append("\n");
         sb.append("    reservationId: ").append(toIndentedString(reservationId)).append("\n");
         sb.append("    role: ").append(toIndentedString(role)).append("\n");
         sb.append("}");

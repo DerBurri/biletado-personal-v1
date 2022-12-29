@@ -7,6 +7,7 @@ import org.biletado.personal.v1.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -171,12 +172,20 @@ public class PersonalApiController implements PersonalApi {
         Iterable<Assignment> allAssignments = assignments.findAll();
         for (Assignment ass : allAssignments) {
             if (ass.getReservationId() == assignment.getReservationId() && ass.getRole() == assignment.getRole()) {
+                getRequest().ifPresent(request ->
+                {
+                    ApiUtil.setStringResponse(request, MediaType.TEXT_PLAIN_VALUE, "reservation already has an assignment with the given role");
+                });
                 return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
             }
         }
 
         // 422 if employee does not exist or the reservation does not exist
-        if (employees.findById(assignment.getId()).orElse(null) == null) {
+        if (employees.findById(assignment.getEmployeeId()).orElse(null) == null) {
+            getRequest().ifPresent(request ->
+            {
+                ApiUtil.setStringResponse(request, MediaType.TEXT_PLAIN_VALUE, "employee does not exist");
+            });
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
         // todo api call reservations
@@ -187,12 +196,18 @@ public class PersonalApiController implements PersonalApi {
             {
                 ApiUtil.setEntityJsonResponse(request, assignments.save(assignment));
             });
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
+//            getRequest().ifPresent(request ->
+//            {
+//                ApiUtil.setStringResponse(request, MediaType.TEXT_PLAIN_VALUE, "reservation does not exist");
+//            });
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
+
         if (aFromDb == null) {
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

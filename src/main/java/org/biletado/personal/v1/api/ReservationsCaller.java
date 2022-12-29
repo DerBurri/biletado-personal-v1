@@ -24,7 +24,7 @@ public class ReservationsCaller {
 
     public List<Reservation> getReservations()
     {
-        ReservationList wrapper = restTemplate.getForObject(url + "/reservations", ReservationList.class);
+        ReservationList wrapper = restTemplate.getForObject(url + "/reservations/", ReservationList.class);
 
         List<Reservation> list = wrapper.getReservations();
         return list;
