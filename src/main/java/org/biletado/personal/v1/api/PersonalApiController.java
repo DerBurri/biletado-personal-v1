@@ -8,6 +8,7 @@ import org.biletado.personal.v1.model.PersonalEmployeesGet200Response;
 import org.biletado.personal.v1.repository.AssignmentRepository;
 import org.biletado.personal.v1.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -64,10 +65,15 @@ public class PersonalApiController implements PersonalApi {
     public ResponseEntity<Void> personalEmployeesIdDelete(UUID id) {
         Employee employee = employees.findById(id).orElse(null);
         if (employee == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        employees.deleteById(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        try {
+            employees.deleteById(id);
+        }
+        catch (DataAccessException e)
+        {
+            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         // todo 401 if no (valid) authentication is given
-        // todo 422 deletion not possible because of existing assignments
     }
 
     @Override
@@ -104,7 +110,13 @@ public class PersonalApiController implements PersonalApi {
     public ResponseEntity<Void> personalAssignmentsIdDelete(UUID id) {
         Assignment assignment = assignments.findById(id).orElse(null);
         if (assignment == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        employees.deleteById(id);
+        try {
+            employees.deleteById(id);
+        }
+        catch (DataAccessException e)
+        {
+            //Placeholder for DataAccessException
+        }
         return new ResponseEntity<>(HttpStatus.OK);
         // todo 401 if no (valid) authentication is given
     }
