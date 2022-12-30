@@ -13,6 +13,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import org.hibernate.annotations.Type;
 
 
 import javax.annotation.Generated;
@@ -31,7 +32,7 @@ public class Assignment {
 
     @JsonProperty("id")
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+//    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
 
@@ -47,6 +48,7 @@ public class Assignment {
 //    @ManyToOne
 //    @JoinColumn(name = "employee_id")
 //    private Employee employee;
+
 
     /**
      * the role which the employee impersonates in this assignment
@@ -69,7 +71,7 @@ public class Assignment {
 
         @Override
         public String toString() {
-            return String.valueOf(value);
+            return value;
         }
 
         @JsonCreator
@@ -86,6 +88,7 @@ public class Assignment {
     @JsonProperty("role")
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
+    @Type(type = "org.biletado.personal.v1.model.PostgreSQLEnumType")
     private RoleEnum role;
 
 
