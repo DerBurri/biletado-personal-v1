@@ -2,13 +2,13 @@ package org.biletado.personal.v1.api;
 
 
 import org.biletado.personal.v1.model.Reservation;
-import org.biletado.personal.v1.model.ReservationList;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ReservationsCaller {
@@ -20,13 +20,11 @@ public class ReservationsCaller {
     public ReservationsCaller(RestTemplateBuilder builder)
     {
         this.restTemplate = builder.build();
+        restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
     }
 
-    public List<Reservation> getReservations()
+    public Reservation getReservationsFromId(UUID reservation_id)
     {
-        ReservationList wrapper = restTemplate.getForObject(url + "/reservations/", ReservationList.class);
-
-        List<Reservation> list = wrapper.getReservations();
-        return list;
+        return restTemplate.getForObject(url + "/reservations/" + reservation_id.toString() + "/", Reservation.class);
     }
 }
