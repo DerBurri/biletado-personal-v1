@@ -113,6 +113,8 @@ services:
     volumes:
       - ./traefik/traefik.yaml:/etc/traefik/traefik.yaml:Z
       - ./traefik/traefik.conf.d/:/etc/traefik/traefik.conf.d/:Z
+      - ./backend-personal/application.properties:/usr/app/config/application.properties
+      - ./backend-personal/application-dev.properties:/usr/app/config/application-dev.properties
     extra_hosts:
     # necessary on linux to access local backends through traefik via e.g. `url: http://host.docker.internal:9000/`
      - host.docker.internal:host-gateway
