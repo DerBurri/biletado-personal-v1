@@ -6,10 +6,13 @@ import org.biletado.personal.v1.repository.AssignmentRepository;
 import org.biletado.personal.v1.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.NativeWebRequest;
 
@@ -24,6 +27,11 @@ public class PersonalApiController implements PersonalApi {
 
     private final NativeWebRequest request;
 
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "invalid input")
+    @ExceptionHandler({InvalidDataAccessApiUsageException.class})
+    public void handleException() {
+
+    }
 
     @Autowired
     ReservationsCaller reservationsCaller;
@@ -155,35 +163,14 @@ public class PersonalApiController implements PersonalApi {
         // todo 401 if no (valid) authentication is given
     }
 
-    @Override
-    public ResponseEntity<Void> personalAssignmentsIdPut(UUID id, Assignment assignment) {
-        if (id.equals(assignment.getId())) {
-            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
-        }
-        Assignment assignmentFromDb = assignments.findById(id).orElse(null);
-        if (assignmentFromDb == null) {
-            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
-        }
-        try {
-            assignments.save(assignment);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
-        }
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        // todo 401 if no (valid) authentication is given
-    }
-
-    @Override
-    public ResponseEntity<Assignment> personalAssignmentsPost(Assignment assignment) {
-        Assignment aFromDb = assignments.findById(assignment.getId()).orElse(null);
-
+    private Optional<ResponseEntity> newAssignment(Assignment assignment) {
         // 422 if employee does not exist or the reservation does not exist
         if (employees.findById(assignment.getEmployeeId()).orElse(null) == null) {
             getRequest().ifPresent(request ->
             {
                 ApiUtil.setStringResponse(request, MediaType.TEXT_PLAIN_VALUE, "employee does not exist");
             });
-            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+            return Optional.of(new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY));
         }
         // check reservations api if reservation exists
         try {
@@ -193,7 +180,7 @@ public class PersonalApiController implements PersonalApi {
             {
                 ApiUtil.setStringResponse(request, MediaType.TEXT_PLAIN_VALUE, "reservation does not exist");
             });
-            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+            return Optional.of(new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY));
         }
 
 
@@ -207,7 +194,7 @@ public class PersonalApiController implements PersonalApi {
                 {
                     ApiUtil.setStringResponse(request, MediaType.TEXT_PLAIN_VALUE, "reservation already has an assignment with the given role");
                 });
-                return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+                return Optional.of(new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY));
             }
         }
 
@@ -217,9 +204,49 @@ public class PersonalApiController implements PersonalApi {
                 ApiUtil.setEntityJsonResponse(request, assignments.save(assignment));
             });
         } catch (RuntimeException e) {
+            return Optional.of(new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY));
+        }
+
+        return Optional.empty();
+    }
+
+    @Override
+    public ResponseEntity<Void> personalAssignmentsIdPut(UUID id, Assignment assignment) {
+        if (!id.equals(assignment.getId())) {
+            getRequest().ifPresent(request ->
+            {
+                ApiUtil.setStringResponse(request, MediaType.TEXT_PLAIN_VALUE, "mismatching id in url and object");
+            });
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
+        Optional<ResponseEntity> responseEntity = newAssignment(assignment);
+        if (responseEntity.isPresent()) {
+            return responseEntity.get();
+        }
+
+        Assignment assignmentFromDb = assignments.findById(id).orElse(null);
+        if (assignmentFromDb == null) {
+            getRequest().ifPresent(request ->
+            {
+                ApiUtil.setEntityJsonResponse(request, assignments.save(assignment));
+            });
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        }
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
+        // todo 401 if no (valid) authentication is given
+    }
+
+    @Override
+    public ResponseEntity<Assignment> personalAssignmentsPost(Assignment assignment) {
+        Optional<ResponseEntity> responseEntity = newAssignment(assignment);
+        if (responseEntity.isPresent()) {
+            return responseEntity.get();
+        }
+
+        Assignment aFromDb = assignments.findById(assignment.getId()).orElse(null);
         if (aFromDb == null) {
             return new ResponseEntity<>(HttpStatus.CREATED);
         }

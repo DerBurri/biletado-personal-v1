@@ -39,14 +39,9 @@ public class Employee {
     @Column(name = "name")
     private String name;
 
-//  @OneToMany(mappedBy = "id")
-//  Set<Assignment> assignments;
-
-
-//  public Employee id(UUID id) {
-//    this.id = id;
-//    return this;
-//  }
+    public Employee() {
+        this.id = UUID.randomUUID();
+    }
 
     /**
      * the id of the employee
@@ -67,11 +62,6 @@ public class Employee {
     public void setId(UUID id) {
         this.id = id;
     }
-
-//  public Employee name(String name) {
-//    this.name = name;
-//    return this;
-//  }
 
     /**
      * the name of the employee

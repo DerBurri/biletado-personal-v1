@@ -45,10 +45,6 @@ public class Assignment {
     @Column(name = "reservation_id")
     private UUID reservationId;
 
-//    @ManyToOne
-//    @JoinColumn(name = "employee_id")
-//    private Employee employee;
-
 
     /**
      * the role which the employee impersonates in this assignment
@@ -91,11 +87,9 @@ public class Assignment {
     @Type(type = "org.biletado.personal.v1.model.PostgreSQLEnumType")
     private RoleEnum role;
 
-
-//    public Assignment id(UUID id) {
-//        this.id = id;
-//        return this;
-//    }
+    public Assignment() {
+        this.id = UUID.randomUUID();
+    }
 
     /**
      * the id of the assignment
@@ -112,11 +106,6 @@ public class Assignment {
         this.id = id;
     }
 
-//    public Assignment employeeId(UUID employeeId) {
-//        this.employee.id(employeeId);
-//        return this;
-//    }
-
     /**
      * the id of the employee this assignment references
      *
@@ -127,18 +116,12 @@ public class Assignment {
     @Schema(name = "employee_id", description = "the id of the employee this assignment references", required = true)
     public UUID getEmployeeId() {
         return employeeId;
-//        return employee.getId();
     }
 
     public void setEmployeeId(UUID employeeId) {
         this.employeeId = employeeId;
-//        employee.setId(employeeId);
     }
 
-//    public Assignment reservationId(UUID reservationId) {
-//        this.reservationId = reservationId;
-//        return this;
-//    }
 
     /**
      * the id of the reservation this assignment references
@@ -155,11 +138,6 @@ public class Assignment {
     public void setReservationId(UUID reservationId) {
         this.reservationId = reservationId;
     }
-
-//    public Assignment role(RoleEnum role) {
-//        this.role = role;
-//        return this;
-//    }
 
     /**
      * the role which the employee impersonates in this assignment
