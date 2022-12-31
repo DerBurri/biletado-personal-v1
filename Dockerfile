@@ -16,7 +16,7 @@ RUN --mount=type=cache,target=/root/.m2 mvn -f $HOME/pom.xml clean package
 #RUN ls -la target
 
 
-FROM openjdk:18 as biletado-personal
+FROM openjdk:19 as biletado-personal
 ENV HOME=/usr/app
 
 # copy jar from build container

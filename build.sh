@@ -1,4 +1,4 @@
 #!/bin/sh
 
-docker build -t biletado-personal ./
+DOCKER_BUILDKIT=1 docker build -t biletado-personal ./
 

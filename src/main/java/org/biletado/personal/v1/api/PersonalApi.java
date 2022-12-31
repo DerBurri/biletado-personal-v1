@@ -13,6 +13,7 @@ import org.biletado.personal.v1.model.PersonalEmployeesGet200Response;
 import org.biletado.personal.v1.model.PersonalStatusGet200Response;
 
 import java.util.UUID;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -43,34 +44,34 @@ public interface PersonalApi {
     /**
      * GET /personal/assignments/ : get all personal assignments
      *
-     * @param employeeId filter for a given employee (optional)
+     * @param employeeId    filter for a given employee (optional)
      * @param reservationId filter for a given reservation (optional)
      * @return successful operation (status code 200)
      */
     @Operation(
-        operationId = "personalAssignmentsGet",
-        summary = "get all personal assignments",
-        tags = { "assignments" },
-        responses = {
-            @ApiResponse(responseCode = "200", description = "successful operation", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = PersonalAssignmentsGet200Response.class))
-            })
-        }
+            operationId = "personalAssignmentsGet",
+            summary = "get all personal assignments",
+            tags = {"assignments"},
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "successful operation", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = PersonalAssignmentsGet200Response.class))
+                    })
+            }
     )
     @RequestMapping(
-        method = RequestMethod.GET,
-        value = "/personal/assignments/",
-        produces = { "application/json" }
+            method = RequestMethod.GET,
+            value = "/personal/assignments/",
+            produces = {"application/json"}
     )
     default ResponseEntity<PersonalAssignmentsGet200Response> personalAssignmentsGet(
-        @Parameter(name = "employee_id", description = "filter for a given employee") @Valid @RequestParam(value = "employee_id", required = false) UUID employeeId,
-        @Parameter(name = "reservation_id", description = "filter for a given reservation") @Valid @RequestParam(value = "reservation_id", required = false) UUID reservationId
+            @Parameter(name = "employee_id", description = "filter for a given employee") @Valid @RequestParam(value = "employee_id", required = false) UUID employeeId,
+            @Parameter(name = "reservation_id", description = "filter for a given reservation") @Valid @RequestParam(value = "reservation_id", required = false) UUID reservationId
     ) {
         getRequest().ifPresent(request -> {
-            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+            for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                     String exampleString = "{ \"assignments\" : [ { \"reservation_id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"role\" : \"service\", \"employee_id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }, { \"reservation_id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"role\" : \"service\", \"employee_id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" } ] }";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    ApiUtil.setStringResponse(request, "application/json", exampleString);
                     break;
                 }
             }
@@ -85,33 +86,33 @@ public interface PersonalApi {
      *
      * @param id uuid of the assignment (required)
      * @return successful operation (status code 204)
-     *         or if no (valid) authentication is given (status code 401)
-     *         or not found (status code 404)
+     * or if no (valid) authentication is given (status code 401)
+     * or not found (status code 404)
      */
     @Operation(
-        operationId = "personalAssignmentsIdDelete",
-        summary = "delete an assignment by id",
-        tags = { "assignments" },
-        responses = {
-            @ApiResponse(responseCode = "204", description = "successful operation"),
-            @ApiResponse(responseCode = "401", description = "if no (valid) authentication is given", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
-            }),
-            @ApiResponse(responseCode = "404", description = "not found", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
-            })
-        },
-        security = {
-            @SecurityRequirement(name = "biletado", scopes={  })
-        }
+            operationId = "personalAssignmentsIdDelete",
+            summary = "delete an assignment by id",
+            tags = {"assignments"},
+            responses = {
+                    @ApiResponse(responseCode = "204", description = "successful operation"),
+                    @ApiResponse(responseCode = "401", description = "if no (valid) authentication is given", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
+                    }),
+                    @ApiResponse(responseCode = "404", description = "not found", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
+                    })
+            },
+            security = {
+                    @SecurityRequirement(name = "biletado", scopes = {})
+            }
     )
     @RequestMapping(
-        method = RequestMethod.DELETE,
-        value = "/personal/assignments/{id}/",
-        produces = { "application/json" }
+            method = RequestMethod.DELETE,
+            value = "/personal/assignments/{id}/",
+            produces = {"application/json"}
     )
     default ResponseEntity<Void> personalAssignmentsIdDelete(
-        @Parameter(name = "id", description = "uuid of the assignment", required = true) @PathVariable("id") UUID id
+            @Parameter(name = "id", description = "uuid of the assignment", required = true) @PathVariable("id") UUID id
     ) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
@@ -123,34 +124,34 @@ public interface PersonalApi {
      *
      * @param id uuid of the assignment (required)
      * @return successful operation (status code 200)
-     *         or not found (status code 404)
+     * or not found (status code 404)
      */
     @Operation(
-        operationId = "personalAssignmentsIdGet",
-        summary = "get an assignment by id",
-        tags = { "assignments" },
-        responses = {
-            @ApiResponse(responseCode = "200", description = "successful operation", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Assignment.class))
-            }),
-            @ApiResponse(responseCode = "404", description = "not found", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
-            })
-        }
+            operationId = "personalAssignmentsIdGet",
+            summary = "get an assignment by id",
+            tags = {"assignments"},
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "successful operation", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = Assignment.class))
+                    }),
+                    @ApiResponse(responseCode = "404", description = "not found", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
+                    })
+            }
     )
     @RequestMapping(
-        method = RequestMethod.GET,
-        value = "/personal/assignments/{id}/",
-        produces = { "application/json" }
+            method = RequestMethod.GET,
+            value = "/personal/assignments/{id}/",
+            produces = {MediaType.APPLICATION_JSON_VALUE}
     )
     default ResponseEntity<Assignment> personalAssignmentsIdGet(
-        @Parameter(name = "id", description = "uuid of the assignment", required = true) @PathVariable("id") UUID id
+            @Parameter(name = "id", description = "uuid of the assignment", required = true) @PathVariable("id") UUID id
     ) {
         getRequest().ifPresent(request -> {
-            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+            for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                     String exampleString = "{ \"reservation_id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"role\" : \"service\", \"employee_id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    ApiUtil.setStringResponse(request, "application/json", exampleString);
                     break;
                 }
             }
@@ -164,42 +165,42 @@ public interface PersonalApi {
      * PUT /personal/assignments/{id}/ : add or update an assignment by id
      * if an id is supplied in the object, it MUST mach with the one in the url
      *
-     * @param id uuid of the assignment (required)
-     * @param assignment  (required)
+     * @param id         uuid of the assignment (required)
+     * @param assignment (required)
      * @return successful operation (status code 204)
-     *         or invalid input (status code 400)
-     *         or if no (valid) authentication is given (status code 401)
-     *         or if the reservation already has an assignment with the given role or the employee does not exist or the reservation does not exist or mismatching id in url and object  (status code 422)
+     * or invalid input (status code 400)
+     * or if no (valid) authentication is given (status code 401)
+     * or if the reservation already has an assignment with the given role or the employee does not exist or the reservation does not exist or mismatching id in url and object  (status code 422)
      */
     @Operation(
-        operationId = "personalAssignmentsIdPut",
-        summary = "add or update an assignment by id",
-        tags = { "assignments" },
-        responses = {
-            @ApiResponse(responseCode = "204", description = "successful operation"),
-            @ApiResponse(responseCode = "400", description = "invalid input", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
-            }),
-            @ApiResponse(responseCode = "401", description = "if no (valid) authentication is given", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
-            }),
-            @ApiResponse(responseCode = "422", description = "if the reservation already has an assignment with the given role or the employee does not exist or the reservation does not exist or mismatching id in url and object ", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
-            })
-        },
-        security = {
-            @SecurityRequirement(name = "biletado", scopes={  })
-        }
+            operationId = "personalAssignmentsIdPut",
+            summary = "add or update an assignment by id",
+            tags = {"assignments"},
+            responses = {
+                    @ApiResponse(responseCode = "204", description = "successful operation"),
+                    @ApiResponse(responseCode = "400", description = "invalid input", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
+                    }),
+                    @ApiResponse(responseCode = "401", description = "if no (valid) authentication is given", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
+                    }),
+                    @ApiResponse(responseCode = "422", description = "if the reservation already has an assignment with the given role or the employee does not exist or the reservation does not exist or mismatching id in url and object ", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
+                    })
+            },
+            security = {
+                    @SecurityRequirement(name = "biletado", scopes = {})
+            }
     )
     @RequestMapping(
-        method = RequestMethod.PUT,
-        value = "/personal/assignments/{id}/",
-        produces = { "application/json" },
-        consumes = { "application/json" }
+            method = RequestMethod.PUT,
+            value = "/personal/assignments/{id}/",
+            produces = {"application/json"},
+            consumes = {"application/json"}
     )
     default ResponseEntity<Void> personalAssignmentsIdPut(
-        @Parameter(name = "id", description = "uuid of the assignment", required = true) @PathVariable("id") UUID id,
-        @Parameter(name = "Assignment", description = "", required = true) @Valid @RequestBody Assignment assignment
+            @Parameter(name = "id", description = "uuid of the assignment", required = true) @PathVariable("id") UUID id,
+            @Parameter(name = "Assignment", description = "", required = true) @Valid @RequestBody Assignment assignment
     ) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
@@ -210,52 +211,52 @@ public interface PersonalApi {
      * POST /personal/assignments/ : add a new assignment
      * MAY contain a uuid. If so, this method does the same checks as &#x60;PUT&#x60; does.
      *
-     * @param assignment  (required)
+     * @param assignment (required)
      * @return Successful operation of updating an existing assignment. This can only happen if a uuid gets passed.  (status code 200)
-     *         or successful operation of creating a new assignment (status code 201)
-     *         or invalid input (status code 400)
-     *         or if no (valid) authentication is given (status code 401)
-     *         or if the reservation already has an assignment with the given role or the employee does not exist or the reservation does not exist  (status code 422)
+     * or successful operation of creating a new assignment (status code 201)
+     * or invalid input (status code 400)
+     * or if no (valid) authentication is given (status code 401)
+     * or if the reservation already has an assignment with the given role or the employee does not exist or the reservation does not exist  (status code 422)
      */
     @Operation(
-        operationId = "personalAssignmentsPost",
-        summary = "add a new assignment",
-        tags = { "assignments" },
-        responses = {
-            @ApiResponse(responseCode = "200", description = "Successful operation of updating an existing assignment. This can only happen if a uuid gets passed. ", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Assignment.class))
-            }),
-            @ApiResponse(responseCode = "201", description = "successful operation of creating a new assignment", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Assignment.class))
-            }),
-            @ApiResponse(responseCode = "400", description = "invalid input", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
-            }),
-            @ApiResponse(responseCode = "401", description = "if no (valid) authentication is given", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
-            }),
-            @ApiResponse(responseCode = "422", description = "if the reservation already has an assignment with the given role or the employee does not exist or the reservation does not exist ", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
-            })
-        },
-        security = {
-            @SecurityRequirement(name = "biletado", scopes={  })
-        }
+            operationId = "personalAssignmentsPost",
+            summary = "add a new assignment",
+            tags = {"assignments"},
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Successful operation of updating an existing assignment. This can only happen if a uuid gets passed. ", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = Assignment.class))
+                    }),
+                    @ApiResponse(responseCode = "201", description = "successful operation of creating a new assignment", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = Assignment.class))
+                    }),
+                    @ApiResponse(responseCode = "400", description = "invalid input", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
+                    }),
+                    @ApiResponse(responseCode = "401", description = "if no (valid) authentication is given", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
+                    }),
+                    @ApiResponse(responseCode = "422", description = "if the reservation already has an assignment with the given role or the employee does not exist or the reservation does not exist ", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
+                    })
+            },
+            security = {
+                    @SecurityRequirement(name = "biletado", scopes = {})
+            }
     )
     @RequestMapping(
-        method = RequestMethod.POST,
-        value = "/personal/assignments/",
-        produces = { "application/json" },
-        consumes = { "application/json" }
+            method = RequestMethod.POST,
+            value = "/personal/assignments/",
+            produces = {"application/json"},
+            consumes = {"application/json"}
     )
     default ResponseEntity<Assignment> personalAssignmentsPost(
-        @Parameter(name = "Assignment", description = "", required = true) @Valid @RequestBody Assignment assignment
+            @Parameter(name = "Assignment", description = "", required = true) @Valid @RequestBody Assignment assignment
     ) {
         getRequest().ifPresent(request -> {
-            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+            for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                     String exampleString = "{ \"reservation_id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"role\" : \"service\", \"employee_id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    ApiUtil.setStringResponse(request, "application/json", exampleString);
                     break;
                 }
             }
@@ -271,28 +272,28 @@ public interface PersonalApi {
      * @return successful operation (status code 200)
      */
     @Operation(
-        operationId = "personalEmployeesGet",
-        summary = "get all employees",
-        tags = { "employees" },
-        responses = {
-            @ApiResponse(responseCode = "200", description = "successful operation", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = PersonalEmployeesGet200Response.class))
-            })
-        }
+            operationId = "personalEmployeesGet",
+            summary = "get all employees",
+            tags = {"employees"},
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "successful operation", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = PersonalEmployeesGet200Response.class))
+                    })
+            }
     )
     @RequestMapping(
-        method = RequestMethod.GET,
-        value = "/personal/employees/",
-        produces = { "application/json" }
+            method = RequestMethod.GET,
+            value = "/personal/employees/",
+            produces = {"application/json"}
     )
     default ResponseEntity<PersonalEmployeesGet200Response> personalEmployeesGet(
-        
+
     ) {
         getRequest().ifPresent(request -> {
-            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+            for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                     String exampleString = "{ \"employees\" : [ { \"name\" : \"Max Specimeno\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }, { \"name\" : \"Max Specimeno\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" } ] }";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    ApiUtil.setStringResponse(request, "application/json", exampleString);
                     break;
                 }
             }
@@ -307,37 +308,37 @@ public interface PersonalApi {
      *
      * @param id uuid of the employee (required)
      * @return successful operation (status code 204)
-     *         or if no (valid) authentication is given (status code 401)
-     *         or not found (status code 404)
-     *         or deletion not possible because of existing assignments (status code 422)
+     * or if no (valid) authentication is given (status code 401)
+     * or not found (status code 404)
+     * or deletion not possible because of existing assignments (status code 422)
      */
     @Operation(
-        operationId = "personalEmployeesIdDelete",
-        summary = "delete an employee by id",
-        tags = { "employees" },
-        responses = {
-            @ApiResponse(responseCode = "204", description = "successful operation"),
-            @ApiResponse(responseCode = "401", description = "if no (valid) authentication is given", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
-            }),
-            @ApiResponse(responseCode = "404", description = "not found", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
-            }),
-            @ApiResponse(responseCode = "422", description = "deletion not possible because of existing assignments", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
-            })
-        },
-        security = {
-            @SecurityRequirement(name = "biletado", scopes={  })
-        }
+            operationId = "personalEmployeesIdDelete",
+            summary = "delete an employee by id",
+            tags = {"employees"},
+            responses = {
+                    @ApiResponse(responseCode = "204", description = "successful operation"),
+                    @ApiResponse(responseCode = "401", description = "if no (valid) authentication is given", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
+                    }),
+                    @ApiResponse(responseCode = "404", description = "not found", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
+                    }),
+                    @ApiResponse(responseCode = "422", description = "deletion not possible because of existing assignments", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
+                    })
+            },
+            security = {
+                    @SecurityRequirement(name = "biletado", scopes = {})
+            }
     )
     @RequestMapping(
-        method = RequestMethod.DELETE,
-        value = "/personal/employees/{id}/",
-        produces = { "application/json" }
+            method = RequestMethod.DELETE,
+            value = "/personal/employees/{id}/",
+            produces = {"application/json"}
     )
     default ResponseEntity<Void> personalEmployeesIdDelete(
-        @Parameter(name = "id", description = "uuid of the employee", required = true) @PathVariable("id") UUID id
+            @Parameter(name = "id", description = "uuid of the employee", required = true) @PathVariable("id") UUID id
     ) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
@@ -349,34 +350,34 @@ public interface PersonalApi {
      *
      * @param id uuid of the employee (required)
      * @return successful operation (status code 200)
-     *         or not found (status code 404)
+     * or not found (status code 404)
      */
     @Operation(
-        operationId = "personalEmployeesIdGet",
-        summary = "get an employee by id",
-        tags = { "employees" },
-        responses = {
-            @ApiResponse(responseCode = "200", description = "successful operation", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Employee.class))
-            }),
-            @ApiResponse(responseCode = "404", description = "not found", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
-            })
-        }
+            operationId = "personalEmployeesIdGet",
+            summary = "get an employee by id",
+            tags = {"employees"},
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "successful operation", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = Employee.class))
+                    }),
+                    @ApiResponse(responseCode = "404", description = "not found", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
+                    })
+            }
     )
     @RequestMapping(
-        method = RequestMethod.GET,
-        value = "/personal/employees/{id}/",
-        produces = { "application/json" }
+            method = RequestMethod.GET,
+            value = "/personal/employees/{id}/",
+            produces = {"application/json"}
     )
     default ResponseEntity<Employee> personalEmployeesIdGet(
-        @Parameter(name = "id", description = "uuid of the employee", required = true) @PathVariable("id") UUID id
+            @Parameter(name = "id", description = "uuid of the employee", required = true) @PathVariable("id") UUID id
     ) {
         getRequest().ifPresent(request -> {
-            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+            for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                     String exampleString = "{ \"name\" : \"Max Specimeno\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    ApiUtil.setStringResponse(request, "application/json", exampleString);
                     break;
                 }
             }
@@ -390,42 +391,42 @@ public interface PersonalApi {
      * PUT /personal/employees/{id}/ : add or update an employee by id
      * if an id is supplied in the object, it MUST mach with the one in the url
      *
-     * @param id uuid of the employee (required)
-     * @param employee  (required)
+     * @param id       uuid of the employee (required)
+     * @param employee (required)
      * @return successful operation (status code 204)
-     *         or invalid input (status code 400)
-     *         or if no (valid) authentication is given (status code 401)
-     *         or mismatching id in url and object (status code 422)
+     * or invalid input (status code 400)
+     * or if no (valid) authentication is given (status code 401)
+     * or mismatching id in url and object (status code 422)
      */
     @Operation(
-        operationId = "personalEmployeesIdPut",
-        summary = "add or update an employee by id",
-        tags = { "employees" },
-        responses = {
-            @ApiResponse(responseCode = "204", description = "successful operation"),
-            @ApiResponse(responseCode = "400", description = "invalid input", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
-            }),
-            @ApiResponse(responseCode = "401", description = "if no (valid) authentication is given", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
-            }),
-            @ApiResponse(responseCode = "422", description = "mismatching id in url and object", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
-            })
-        },
-        security = {
-            @SecurityRequirement(name = "biletado", scopes={  })
-        }
+            operationId = "personalEmployeesIdPut",
+            summary = "add or update an employee by id",
+            tags = {"employees"},
+            responses = {
+                    @ApiResponse(responseCode = "204", description = "successful operation"),
+                    @ApiResponse(responseCode = "400", description = "invalid input", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
+                    }),
+                    @ApiResponse(responseCode = "401", description = "if no (valid) authentication is given", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
+                    }),
+                    @ApiResponse(responseCode = "422", description = "mismatching id in url and object", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
+                    })
+            },
+            security = {
+                    @SecurityRequirement(name = "biletado", scopes = {})
+            }
     )
     @RequestMapping(
-        method = RequestMethod.PUT,
-        value = "/personal/employees/{id}/",
-        produces = { "application/json" },
-        consumes = { "application/json" }
+            method = RequestMethod.PUT,
+            value = "/personal/employees/{id}/",
+            produces = {"application/json"},
+            consumes = {"application/json"}
     )
     default ResponseEntity<Void> personalEmployeesIdPut(
-        @Parameter(name = "id", description = "uuid of the employee", required = true) @PathVariable("id") UUID id,
-        @Parameter(name = "Employee", description = "", required = true) @Valid @RequestBody Employee employee
+            @Parameter(name = "id", description = "uuid of the employee", required = true) @PathVariable("id") UUID id,
+            @Parameter(name = "Employee", description = "", required = true) @Valid @RequestBody Employee employee
     ) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
@@ -436,48 +437,48 @@ public interface PersonalApi {
      * POST /personal/employees/ : add a new employee
      * MAY contain a uuid. If so, this method does the same checks as &#x60;PUT&#x60; does.
      *
-     * @param employee  (required)
+     * @param employee (required)
      * @return Successful operation of updating an existing employee. This can only happen if a uuid gets passed.  (status code 200)
-     *         or successful operation of creating a new employee (status code 201)
-     *         or invalid input (status code 400)
-     *         or if no (valid) authentication is given (status code 401)
+     * or successful operation of creating a new employee (status code 201)
+     * or invalid input (status code 400)
+     * or if no (valid) authentication is given (status code 401)
      */
     @Operation(
-        operationId = "personalEmployeesPost",
-        summary = "add a new employee",
-        tags = { "employees" },
-        responses = {
-            @ApiResponse(responseCode = "200", description = "Successful operation of updating an existing employee. This can only happen if a uuid gets passed. ", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Employee.class))
-            }),
-            @ApiResponse(responseCode = "201", description = "successful operation of creating a new employee", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Employee.class))
-            }),
-            @ApiResponse(responseCode = "400", description = "invalid input", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
-            }),
-            @ApiResponse(responseCode = "401", description = "if no (valid) authentication is given", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
-            })
-        },
-        security = {
-            @SecurityRequirement(name = "biletado", scopes={  })
-        }
+            operationId = "personalEmployeesPost",
+            summary = "add a new employee",
+            tags = {"employees"},
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Successful operation of updating an existing employee. This can only happen if a uuid gets passed. ", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = Employee.class))
+                    }),
+                    @ApiResponse(responseCode = "201", description = "successful operation of creating a new employee", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = Employee.class))
+                    }),
+                    @ApiResponse(responseCode = "400", description = "invalid input", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
+                    }),
+                    @ApiResponse(responseCode = "401", description = "if no (valid) authentication is given", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
+                    })
+            },
+            security = {
+                    @SecurityRequirement(name = "biletado", scopes = {})
+            }
     )
     @RequestMapping(
-        method = RequestMethod.POST,
-        value = "/personal/employees/",
-        produces = { "application/json" },
-        consumes = { "application/json" }
+            method = RequestMethod.POST,
+            value = "/personal/employees/",
+            produces = {"application/json"},
+            consumes = {"application/json"}
     )
     default ResponseEntity<Employee> personalEmployeesPost(
-        @Parameter(name = "Employee", description = "", required = true) @Valid @RequestBody Employee employee
+            @Parameter(name = "Employee", description = "", required = true) @Valid @RequestBody Employee employee
     ) {
         getRequest().ifPresent(request -> {
-            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+            for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                     String exampleString = "{ \"name\" : \"Max Specimeno\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    ApiUtil.setStringResponse(request, "application/json", exampleString);
                     break;
                 }
             }
@@ -493,27 +494,27 @@ public interface PersonalApi {
      * @return successful operation (status code 200)
      */
     @Operation(
-        operationId = "personalStatusGet",
-        summary = "returns information about the backend-service and status",
-        responses = {
-            @ApiResponse(responseCode = "200", description = "successful operation", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = PersonalStatusGet200Response.class))
-            })
-        }
+            operationId = "personalStatusGet",
+            summary = "returns information about the backend-service and status",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "successful operation", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = PersonalStatusGet200Response.class))
+                    })
+            }
     )
     @RequestMapping(
-        method = RequestMethod.GET,
-        value = "/personal/status/",
-        produces = { "application/json" }
+            method = RequestMethod.GET,
+            value = "/personal/status/",
+            produces = {"application/json"}
     )
     default ResponseEntity<PersonalStatusGet200Response> personalStatusGet(
-        
+
     ) {
         getRequest().ifPresent(request -> {
-            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+            for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                     String exampleString = "{ \"apiVersion\" : \"1.2.3\", \"authors\" : [ \"Maximilian Burr\", \"Valerio Cocco\", \"Daniel Rittershofer\" ] }";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    ApiUtil.setStringResponse(request, "application/json", exampleString);
                     break;
                 }
             }
