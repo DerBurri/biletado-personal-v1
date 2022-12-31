@@ -40,6 +40,11 @@ docker run --rm -v "${PWD}:/local" openapitools/openapi-generator-cli generate \
 ### Build & Run
 `./build_and_run.sh`
 
+### Config
+* `./compose/backend-personal/application.properties`
+* `./compose/backend-personal/application-dev.properties`
+* `docker run -v <PATH>:/usr/app/config/ -p 9000:9000 --network="host" --env-file ./env.list biletado-personal:latest`
+
 # How to use
 * Swagger UI of backend: <http://localhost:9000/swagger-ui/index.html>
 
