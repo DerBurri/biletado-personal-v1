@@ -15,7 +15,7 @@ public class ReservationsCaller {
 
     private final RestTemplate restTemplate;
 
-    @Value("${BACKEND_URL:http://localhost/reservations/api")
+    @Value("${BACKEND_URL}")
     private String url;
     public ReservationsCaller(RestTemplateBuilder builder)
     {
