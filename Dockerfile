@@ -22,4 +22,4 @@ ENV HOME=/usr/app
 # copy jar from build container
 COPY --from=build-biletado-personal $HOME/target/openapi-spring-*.jar $HOME/
 
-ENTRYPOINT java -jar $HOME/openapi-spring-*.jar --spring.config.location=optional:$HOME/config/
+ENTRYPOINT SPRING_ACTIVE_PROFILES=prod java -jar $HOME/openapi-spring-*.jar --spring.config.location=optional:$HOME/config/
