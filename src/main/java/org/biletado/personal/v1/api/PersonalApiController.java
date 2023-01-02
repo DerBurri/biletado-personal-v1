@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.context.request.NativeWebRequest;
 
 import java.util.Optional;
@@ -175,7 +176,7 @@ public class PersonalApiController implements PersonalApi {
         // check reservations api if reservation exists
         try {
             Reservation reservation = reservationsCaller.getReservationsFromId(assignment.getReservationId());
-        } catch (RuntimeException e) {
+        } catch (HttpClientErrorException e) {
             getRequest().ifPresent(request ->
             {
                 ApiUtil.setStringResponse(request, MediaType.TEXT_PLAIN_VALUE, "reservation does not exist");
