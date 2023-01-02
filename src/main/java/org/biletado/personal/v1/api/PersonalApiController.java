@@ -85,7 +85,6 @@ public class PersonalApiController implements PersonalApi {
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        // todo 401 if no (valid) authentication is given
     }
 
     @Override
@@ -111,7 +110,6 @@ public class PersonalApiController implements PersonalApi {
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        // todo 401 if no (valid) authentication is given
     }
 
     @Override
@@ -160,8 +158,7 @@ public class PersonalApiController implements PersonalApi {
         } catch (DataAccessException e) {
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
-        return new ResponseEntity<>(HttpStatus.OK);
-        // todo 401 if no (valid) authentication is given
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     private Optional<ResponseEntity> newAssignment(Assignment assignment) {
@@ -213,6 +210,7 @@ public class PersonalApiController implements PersonalApi {
 
     @Override
     public ResponseEntity<Void> personalAssignmentsIdPut(UUID id, Assignment assignment) {
+        Assignment assignmentFromDb = assignments.findById(id).orElse(null);
         if (!id.equals(assignment.getId())) {
             getRequest().ifPresent(request ->
             {
@@ -226,7 +224,6 @@ public class PersonalApiController implements PersonalApi {
             return responseEntity.get();
         }
 
-        Assignment assignmentFromDb = assignments.findById(id).orElse(null);
         if (assignmentFromDb == null) {
             getRequest().ifPresent(request ->
             {
@@ -236,18 +233,16 @@ public class PersonalApiController implements PersonalApi {
         }
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-
-        // todo 401 if no (valid) authentication is given
     }
 
     @Override
     public ResponseEntity<Assignment> personalAssignmentsPost(Assignment assignment) {
+        Assignment aFromDb = assignments.findById(assignment.getId()).orElse(null);
         Optional<ResponseEntity> responseEntity = newAssignment(assignment);
         if (responseEntity.isPresent()) {
             return responseEntity.get();
         }
 
-        Assignment aFromDb = assignments.findById(assignment.getId()).orElse(null);
         if (aFromDb == null) {
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
