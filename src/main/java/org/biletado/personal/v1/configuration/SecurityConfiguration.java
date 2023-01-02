@@ -23,9 +23,6 @@ import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 @EnableWebSecurity
 public class SecurityConfiguration {
 
-    @Value("${spring.security.oauth2.resourceserver.jwt.issuer-uri}")
-    String issuerURI;
-
     @Value("${spring.security.oauth2.resourceserver.jwt.jwk-set-uri}")
     String jwksSetUri;
 
