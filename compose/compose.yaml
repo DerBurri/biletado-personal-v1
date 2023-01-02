@@ -100,6 +100,7 @@ services:
       POSTGRES_PERSONAL_DBNAME: "personal"
       POSTGRES_PERSONAL_HOST: "postgres"
       POSTGRES_PERSONAL_PORT: "5432"
+      BACKEND_URL: ${BACKEND_URL}
     expose:
       - "9000"
     restart: unless-stopped
