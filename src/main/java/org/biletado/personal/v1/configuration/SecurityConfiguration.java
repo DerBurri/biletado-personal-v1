@@ -36,10 +36,14 @@ public class SecurityConfiguration {
                         .antMatchers(HttpMethod.PUT).authenticated()
                         .antMatchers(HttpMethod.DELETE).authenticated()
                 )
+                .csrf().disable()
+                .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
+
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
-                )
-                .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
+                );
+
+
         return http.build();
     }
 
