@@ -9,7 +9,7 @@ ADD . $HOME
 # RUN ls -la # ls /build
 
 # build jar
-RUN --mount=type=cache,target=/root/.m2 mvn -Dmaven.test.skip -f $HOME/pom.xml clean package
+RUN mvn -Dmaven.test.skip -f $HOME/pom.xml clean package
 
 # debug
 #RUN ls -la
@@ -22,4 +22,4 @@ ENV HOME=/usr/app
 # copy jar from build container
 COPY --from=build-biletado-personal $HOME/target/openapi-spring-*.jar $HOME/
 
-ENTRYPOINT java -jar $HOME/openapi-spring-*.jar --spring.config.location=optional:$HOME/config/
+ENTRYPOINT SPRING_PROFILES_ACTIVE=prod java -jar $HOME/openapi-spring-*.jar --spring.config.location=optional:$HOME/config/
