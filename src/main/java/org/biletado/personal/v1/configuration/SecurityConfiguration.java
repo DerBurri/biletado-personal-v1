@@ -10,8 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
+import org.springframework.security.oauth2.jose.jws.SignatureAlgorithm;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtDecoders;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 
@@ -46,7 +48,7 @@ public class SecurityConfiguration {
 
     @Bean JwtDecoder jwtDecoder()
     {
-        return JwtDecoders.fromIssuerLocation(issuerURI);
-        //return NimbusJwtDecoder.withJwkSetUri(jwksSetUri).jwsAlgorithm(SignatureAlgorithm.RS256).build();
+        //return JwtDecoders.fromIssuerLocation()
+        return NimbusJwtDecoder.withJwkSetUri(jwksSetUri).jwsAlgorithm(SignatureAlgorithm.RS256).build();
     }
 }

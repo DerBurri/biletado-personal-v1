@@ -86,8 +86,8 @@ services:
     restart: unless-stopped
 
   backend-personal:
-    image: biletado-personal:latest # local image build with /build.sh
-#    image: ghcr.io/derburri/biletado-personal-v1:latest
+    #image: biletado-personal:latest # local image build with /build.sh
+    image: ghcr.io/derburri/biletado-personal-v1:master
 #    image: ${BACKEND_PERSONAL_IMAGE_REPOSITORY}:${BACKEND_PERSONAL_IMAGE_VERSION}
     depends_on:
       - postgres
@@ -101,6 +101,7 @@ services:
       POSTGRES_PERSONAL_HOST: "postgres"
       POSTGRES_PERSONAL_PORT: "5432"
       BACKEND_URL: ${RESERVATIONS_API_BACKEND_URL}
+
 
     expose:
       - "9000"
