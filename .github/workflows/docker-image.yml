@@ -31,7 +31,7 @@ jobs:
           java-version: '19'
           distribution: 'adopt'
       - name: Build with Maven
-        run: BACKED_URL="http://localhost/api/resevations/" mvn --batch-mode --update-snapshots test
+        run: BACKEND_URL="http://localhost/api/resevations/" mvn --batch-mode --update-snapshots test
  
       
   push_to_registry:
