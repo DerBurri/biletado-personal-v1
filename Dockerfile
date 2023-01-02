@@ -9,7 +9,7 @@ ADD . $HOME
 # RUN ls -la # ls /build
 
 # build jar
-RUN --mount=type=cache,target=/root/.m2 mvn -Dmaven.test.skip -f $HOME/pom.xml clean package
+RUN mvn -Dmaven.test.skip -f $HOME/pom.xml clean package
 
 # debug
 #RUN ls -la
