@@ -7,7 +7,7 @@
       <env name="POSTGRES_PERSONAL_DBNAME" value="personal" />
       <env name="POSTGRES_PERSONAL_HOST" value="localhost" />
       <env name="POSTGRES_PERSONAL_PORT" value="5432" />
-      <env name="BACKEND_URL" value="http://localhost/api" />
+      <env name="BACKEND_URL" value="http://localhost/api/reservations/" />
       <env name="KEYCLOAK_HOST" value="localhost" />
       <env name="KEYCLOAK_REALM" value="biletado" />
     </envs>

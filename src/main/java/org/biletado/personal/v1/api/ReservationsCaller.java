@@ -25,6 +25,6 @@ public class ReservationsCaller {
 
     public Reservation getReservationsFromId(UUID reservation_id)
     {
-        return restTemplate.getForObject(url + "/reservations/" + reservation_id.toString() + "/", Reservation.class);
+        return restTemplate.getForObject(url  + reservation_id.toString() + "/", Reservation.class);
     }
 }
