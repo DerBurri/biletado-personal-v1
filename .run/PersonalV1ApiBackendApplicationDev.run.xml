@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="PersonalV1ApiBackendApplicationDev" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
-    <option name="ACTIVE_PROFILES" value="dev" />
+    <option name="ACTIVE_PROFILES" value="prod" />
     <envs>
       <env name="POSTGRES_PERSONAL_USER" value="postgres" />
       <env name="POSTGRES_PERSONAL_PASSWORD" value="postgres" />
