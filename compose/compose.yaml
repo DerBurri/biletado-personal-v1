@@ -102,6 +102,7 @@ services:
       POSTGRES_PERSONAL_PORT: "5432"
       BACKEND_URL: ${RESERVATIONS_API_BACKEND_URL}
 
+
     expose:
       - "9000"
     restart: unless-stopped
