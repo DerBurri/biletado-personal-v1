@@ -1,5 +1,6 @@
 
 package org.biletado.personal.v1;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -18,11 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 class PersonalV1ApiBackendApplicationTests {
 
     @Autowired
-    private PersonalApiController personalApi;
-
-    @Autowired
     private MockMvc mockMvc;
-
 
     @Test
     void testStatusApiCall() throws Exception {
