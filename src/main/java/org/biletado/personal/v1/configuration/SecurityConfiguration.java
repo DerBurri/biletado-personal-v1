@@ -37,6 +37,9 @@ public class SecurityConfiguration {
                         .antMatchers(HttpMethod.PUT).authenticated()
                         .antMatchers(HttpMethod.DELETE).authenticated()
                 )
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
+                )
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
         return http.build();
     }
@@ -46,7 +49,4 @@ public class SecurityConfiguration {
         return JwtDecoders.fromIssuerLocation(issuerURI);
         //return NimbusJwtDecoder.withJwkSetUri(jwksSetUri).jwsAlgorithm(SignatureAlgorithm.RS256).build();
     }
-
-
-
 }
