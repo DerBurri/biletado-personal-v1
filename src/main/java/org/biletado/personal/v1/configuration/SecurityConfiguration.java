@@ -34,6 +34,8 @@ public class SecurityConfiguration {
                         .antMatchers(HttpMethod.GET,"/personal/**").permitAll()
                         .antMatchers(HttpMethod.GET,"/error").permitAll()
                         .antMatchers(HttpMethod.POST).authenticated()
+                        .antMatchers(HttpMethod.PUT).authenticated()
+                        .antMatchers(HttpMethod.DELETE).authenticated()
                 )
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
         return http.build();
