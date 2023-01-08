@@ -1,7 +1,6 @@
 package org.biletado.personal.v1.model;
 
 
-
 import java.util.UUID;
 
 public class Reservation {

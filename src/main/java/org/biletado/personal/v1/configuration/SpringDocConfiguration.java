@@ -38,6 +38,6 @@ public class SpringDocConfiguration {
                                         .type(SecurityScheme.Type.OAUTH2)
                                 )
                 )
-        ;
+                ;
     }
 }

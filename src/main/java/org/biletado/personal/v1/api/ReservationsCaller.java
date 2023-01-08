@@ -17,14 +17,13 @@ public class ReservationsCaller {
 
     @Value("${BACKEND_URL}")
     private String url;
-    public ReservationsCaller(RestTemplateBuilder builder)
-    {
+
+    public ReservationsCaller(RestTemplateBuilder builder) {
         this.restTemplate = builder.build();
         restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
     }
 
-    public Reservation getReservationsFromId(UUID reservation_id)
-    {
-        return restTemplate.getForObject(url  + reservation_id.toString() + "/", Reservation.class);
+    public Reservation getReservationsFromId(UUID reservation_id) {
+        return restTemplate.getForObject(url + reservation_id.toString() + "/", Reservation.class);
     }
 }

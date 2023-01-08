@@ -15,7 +15,6 @@ public class ApiUtil {
     static ObjectMapper mapper = new ObjectMapper();
 
 
-
     public static void setStringResponse(NativeWebRequest req, String contentType, String string) {
         try {
             HttpServletResponse res = req.getNativeResponse(HttpServletResponse.class);
