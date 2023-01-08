@@ -2,8 +2,6 @@ package org.biletado.personal.v1.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.context.request.NativeWebRequest;
 
@@ -12,7 +10,7 @@ import java.io.IOException;
 
 public class ApiUtil {
 
-    static ObjectMapper mapper = new ObjectMapper();
+    static final ObjectMapper mapper = new ObjectMapper();
 
 
     public static void setStringResponse(NativeWebRequest req, String contentType, String string) {

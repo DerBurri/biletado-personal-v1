@@ -37,7 +37,6 @@ public class SpringDocConfiguration {
                                 .addSecuritySchemes("biletado", new SecurityScheme()
                                         .type(SecurityScheme.Type.OAUTH2)
                                 )
-                )
-                ;
+                );
     }
 }
