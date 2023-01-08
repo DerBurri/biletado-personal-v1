@@ -1,0 +1,28 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="PersonalV1ApiBackendApplicationTests" type="JUnit" factoryName="JUnit" nameIsGenerated="true">
+    <module name="biletado-personal-v1" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="org.biletado.personal.v1.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <option name="PACKAGE_NAME" value="org.biletado.personal.v1" />
+    <option name="MAIN_CLASS_NAME" value="org.biletado.personal.v1.PersonalV1ApiBackendApplicationTests" />
+    <option name="METHOD_NAME" value="" />
+    <option name="TEST_OBJECT" value="class" />
+    <envs>
+      <env name="POSTGRES_PERSONAL_USER" value="postgres" />
+      <env name="POSTGRES_PERSONAL_PASSWORD" value="postgres" />
+      <env name="POSTGRES_PERSONAL_DBNAME" value="personal" />
+      <env name="POSTGRES_PERSONAL_HOST" value="localhost" />
+      <env name="POSTGRES_PERSONAL_PORT" value="5432" />
+      <env name="BACKEND_URL" value="http://localhost/api/reservations/" />
+      <env name="KEYCLOAK_HOST" value="localhost" />
+      <env name="KEYCLOAK_REALM" value="biletado" />
+    </envs>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
