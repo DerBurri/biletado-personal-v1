@@ -1,13 +1,13 @@
 package org.biletado.personal.v1;
 
-import com.fasterxml.jackson.databind.Module;
 import org.biletado.logging.RequestLoggingFilter;
-import org.openapitools.jackson.nullable.JsonNullableModule;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+//import com.fasterxml.jackson.databind.Module;
+//import org.openapitools.jackson.nullable.JsonNullableModule;
 
 @SpringBootApplication
 @ComponentScan(basePackages = {"org.biletado.personal.v1", "org.biletado.personal.v1.api", "org.biletado.personal.v1.configuration"})
@@ -19,10 +19,10 @@ public class PersonalV1ApiBackendApplication {
         SpringApplication.run(PersonalV1ApiBackendApplication.class, args);
     }
 
-    @Bean
-    public Module jsonNullableModule() {
-        return new JsonNullableModule();
-    }
+//    @Bean
+//    public Module jsonNullableModule() {
+//        return new JsonNullableModule();
+//    }
 
     @Bean
     public RequestLoggingFilter logFilter() {
