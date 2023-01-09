@@ -62,28 +62,28 @@ KEYCLOAK_HOST=localhost
 KEYCLOAK_REALM=biletado
 ```
 
-In `env.list` are the variables configured that are used in `run_docker.sh`
+In `env.list` are the variables configured that which used in `run_docker.sh`
 
 ## Config Files
 
-The default config files are located in `src/main/java/resources`. There are two profiles `prod` and `test`.
+The default config files are located in `src/main/java/resources`. There are two profiles: `prod` and `test`.
 
 You can mount `.properties` files into the container:
 
 `docker run -v <PATH>:/usr/app/config/ -p 9000:9000 --network="host" --env-file ./env.list biletado-personal:latest`
 
 ### docker compose default config files 
-`docker-compose` is mounting the `compose/backend-personal` directory with the config files
+`docker-compose` mounts the `compose/backend-personal` directory with the config files
 * `./compose/backend-personal/application.properties`
 * `./compose/backend-personal/application-prod.properties`
 into the backend-personal container.
 
 # Tests
-Automated tests are realized with [spring-boot-starter-test](https://docs.spring.io/spring-boot/docs/1.5.7.RELEASE/reference/html/boot-features-testing.html).
+Automated tests are implemented with [spring-boot-starter-test](https://docs.spring.io/spring-boot/docs/1.5.7.RELEASE/reference/html/boot-features-testing.html).
 
 The tests are located in `src/test/java/org/biletado/personal/v1/`.
 
-For tests run the `PersonalV1ApiBackendApplicationTests` class.
+To run tests, execute the `PersonalV1ApiBackendApplicationTests` class.
 
 # CI/CD
 CI/CD ist realized with GitHub [Actions](https://github.com/DerBurri/biletado-personal-v1/actions).
@@ -99,8 +99,8 @@ The JWT token is parsed by the [Spring Security](https://spring.io/projects/spri
 The configuration is in the class `org.biletado.personal.v1.configuration.SecurityConfiguration`.
 
 # Logging
-The capabilities of the spring framework are used for logging.
-You can configure logging with the following properties for example in a `.properties` file:
+For logging, the capabilities of the Spring framework are used.
+For example, you can configure logging with the following properties in a `.properties` file:
 
 ```
 # logging
