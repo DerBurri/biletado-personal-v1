@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.NativeWebRequest;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import javax.annotation.Generated;
@@ -38,6 +40,11 @@ public class PersonalApiController implements PersonalApi {
     AssignmentRepository assignments;
     @Autowired
     EmployeeRepository employees;
+    @Autowired
+    private EmployeeRepository employeeRepository;
+    @Autowired
+    private AssignmentRepository assignmentRepository;
+
 
     @Autowired
     public PersonalApiController(NativeWebRequest request) {
@@ -51,11 +58,15 @@ public class PersonalApiController implements PersonalApi {
 
     @Override
     public ResponseEntity<PersonalEmployeesGet200Response> personalEmployeesGet() {
-        getRequest().ifPresent(request ->
+        /*getRequest().ifPresent(request ->
         {
             ApiUtil.setEntityJsonResponse(request, employees.findAll());
-        });
-        return new ResponseEntity<>(HttpStatus.OK);
+        });*/
+        List<Employee> employees = new ArrayList<>();
+        employeeRepository.findAll().forEach(employees::add);
+        PersonalEmployeesGet200Response response = new PersonalEmployeesGet200Response();
+        response.employees(employees);
+        return ResponseEntity.ok(response);
     }
 
     @Override
@@ -125,11 +136,15 @@ public class PersonalApiController implements PersonalApi {
 
     @Override
     public ResponseEntity<PersonalAssignmentsGet200Response> personalAssignmentsGet(UUID employeeId, UUID reservationId) {
-        getRequest().ifPresent(request ->
-        {
-            ApiUtil.setEntityJsonResponse(request, assignments.findAll());
-        });
-        return new ResponseEntity<>(HttpStatus.OK);
+//        getRequest().ifPresent(request ->
+//        {
+//            ApiUtil.setEntityJsonResponse(request, assignments.findAll());
+//        });
+        List<Assignment> assignments = new ArrayList<>();
+        assignmentRepository.findAll().forEach(assignments::add);
+        PersonalAssignmentsGet200Response response = new PersonalAssignmentsGet200Response();
+        response.assignments(assignments);
+        return ResponseEntity.ok(response);
     }
 
     @Override
