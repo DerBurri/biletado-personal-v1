@@ -11,7 +11,7 @@
       <env name="KEYCLOAK_HOST" value="localhost" />
       <env name="KEYCLOAK_REALM" value="biletado" />
     </envs>
-    <module name="biletado-personal-v1" />
+    <module name="openapi-spring" />
     <option name="SPRING_BOOT_MAIN_CLASS" value="org.biletado.personal.v1.PersonalV1ApiBackendApplication" />
     <method v="2">
       <option name="Make" enabled="true" />
