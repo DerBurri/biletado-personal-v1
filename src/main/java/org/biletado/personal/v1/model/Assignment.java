@@ -2,10 +2,7 @@ package org.biletado.personal.v1.model;
 
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.annotation.*;
 
 import java.util.UUID;
 import javax.persistence.*;
@@ -30,21 +27,16 @@ import javax.annotation.Generated;
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2022-11-22T12:08:12.414629Z[Etc/UTC]")
 public class Assignment {
 
-    @JsonProperty("id")
-    @Id
-//    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
+    @JsonIgnore
+    private boolean idSet = false;
 
     @JsonProperty("employee_id")
-    @Column(name = "employee_id")
     private UUID employeeId;
 
-
     @JsonProperty("reservation_id")
-    @Column(name = "reservation_id")
     private UUID reservationId;
-
 
     /**
      * the role which the employee impersonates in this assignment
@@ -81,10 +73,6 @@ public class Assignment {
         }
     }
 
-    @JsonProperty("role")
-    @Column(name = "role")
-    @Enumerated(EnumType.STRING)
-    @Type(type = "org.biletado.personal.v1.model.PostgreSQLEnumType")
     private RoleEnum role;
 
     public Assignment() {
@@ -96,14 +84,23 @@ public class Assignment {
      *
      * @return id
      */
+    @Id
+//    @GeneratedValue(strategy = GenerationType.AUTO)
     @Valid
     @Schema(name = "id", description = "the id of the assignment", required = false)
     public UUID getId() {
         return id;
     }
 
+
     public void setId(UUID id) {
         this.id = id;
+        idSet = true;
+    }
+
+    @Transient
+    public boolean isIdSet() {
+        return idSet;
     }
 
     /**
@@ -144,6 +141,8 @@ public class Assignment {
      *
      * @return role
      */
+    @Enumerated(EnumType.STRING)
+    @Type(type = "org.biletado.personal.v1.model.PostgreSQLEnumType")
     @NotNull
     @Schema(name = "role", description = "the role which the employee impersonates in this assignment", required = true)
     public RoleEnum getRole() {

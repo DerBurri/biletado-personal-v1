@@ -2,6 +2,7 @@ package org.biletado.personal.v1.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.biletado.personal.v1.model.Message;
 import org.springframework.http.MediaType;
 import org.springframework.web.context.request.NativeWebRequest;
 
@@ -11,6 +12,14 @@ import java.io.IOException;
 public class ApiUtil {
 
     static final ObjectMapper mapper = new ObjectMapper();
+
+    public static String jsonMessage(String message){
+        try {
+            return mapper.writeValueAsString(new Message(message));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public static void setStringResponse(NativeWebRequest req, String contentType, String string) {
         try {
@@ -23,8 +32,8 @@ public class ApiUtil {
         }
     }
 
-    public static void setMessageResponse(NativeWebRequest req, String string) {
-        setStringResponse(req, MediaType.APPLICATION_JSON_VALUE, "{ \"message\" : \"" + string + "\"}");
+    public static void setMessageResponse(NativeWebRequest req, String message) {
+        setStringResponse(req, MediaType.APPLICATION_JSON_VALUE, jsonMessage(message));
     }
 
     public static void setEntityJsonResponse(NativeWebRequest req, Object entity) {

@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.context.request.NativeWebRequest;
 
 import java.util.Optional;
@@ -89,11 +88,15 @@ public class PersonalApiController implements PersonalApi {
     @Override
     public ResponseEntity<Void> personalEmployeesIdPut(UUID id, Employee employee) {
         if (!id.equals(employee.getId())) {
-            getRequest().ifPresent(request ->
-            {
-                ApiUtil.setMessageResponse(request, "mismatching id in url and object");
-            });
-            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+            if (!employee.isIdSet()) {
+                employee.setId(id);
+            } else {
+                getRequest().ifPresent(request ->
+                {
+                    ApiUtil.setMessageResponse(request, "mismatching id in url and object");
+                });
+                return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+            }
         }
         try {
             employees.save(employee);
@@ -164,17 +167,17 @@ public class PersonalApiController implements PersonalApi {
         // check reservations api if reservation exists
         try {
             Reservation reservation = reservationsCaller.getReservationsFromId(assignment.getReservationId());
-        } catch (HttpClientErrorException e) {
+        } catch (Exception e) { // 404 or api down
             getRequest().ifPresent(request ->
             {
-                ApiUtil.setMessageResponse(request, "reservation does not exist");
+                ApiUtil.setMessageResponse(request, "reservation does not exist / not found or veryfied");
             });
             return Optional.of(new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY));
         }
 
 
         // 422 if the reservation already has an assignment with the given role
-        Iterable<Assignment> allAssignments = assignments.findAll();
+        Iterable<Assignment> allAssignments = assignments.findAllByReservationId(assignment.getReservationId());
         for (Assignment ass : allAssignments) {
             if (!(ass.getId().equals(assignment.getId())) && // check if the object is not just getting updated
                     ass.getReservationId().equals(assignment.getReservationId()) && ass.getRole().equals(assignment.getRole())
@@ -202,11 +205,15 @@ public class PersonalApiController implements PersonalApi {
     @Override
     public ResponseEntity<Void> personalAssignmentsIdPut(UUID id, Assignment assignment) {
         if (!id.equals(assignment.getId())) {
-            getRequest().ifPresent(request ->
-            {
-                ApiUtil.setMessageResponse(request, "mismatching id in url and object");
-            });
-            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+            if (!assignment.isIdSet()) {
+                assignment.setId(id);
+            } else {
+                getRequest().ifPresent(request ->
+                {
+                    ApiUtil.setMessageResponse(request, "mismatching id in url and object");
+                });
+                return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+            }
         }
 
         Optional<ResponseEntity> responseEntity = newAssignment(assignment);

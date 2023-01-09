@@ -2,7 +2,7 @@ package org.biletado.personal.v1.model;
 
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import java.util.UUID;
@@ -27,14 +27,12 @@ import javax.annotation.Generated;
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2022-11-22T12:08:12.414629Z[Etc/UTC]")
 public class Employee {
 
-    @JsonProperty("id")
-    @Id
-//  @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private UUID id;
 
-    @JsonProperty("name")
-    @Column(name = "name")
+    @JsonIgnore
+    @Transient
+    private boolean idSet = false;
+
     private String name;
 
     public Employee() {
@@ -46,11 +44,14 @@ public class Employee {
      *
      * @return id
      */
+    @Id
+//  @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Valid
     @Schema(name = "id", description = "the id of the employee", required = false)
     public UUID getId() {
         return id;
     }
+
 
     /**
      * set the id of the employee
@@ -59,6 +60,12 @@ public class Employee {
      */
     public void setId(UUID id) {
         this.id = id;
+        idSet = true;
+    }
+
+    @Transient
+    public boolean isIdSet() {
+        return idSet;
     }
 
     /**

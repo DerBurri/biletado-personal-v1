@@ -27,7 +27,7 @@ Change default port value in application.properties
 ## Generate Java Code
 ```
 docker run --rm -v "${PWD}:/local" openapitools/openapi-generator-cli generate \
--i /local/personal-v1.yml \
+-i /local/personnel-v1.yml \
 -g spring \
 -o /local/out/spring
 ```

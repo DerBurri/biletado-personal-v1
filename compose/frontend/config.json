@@ -15,6 +15,6 @@
   "statusUrls": {
     "assets-v1": "http://localhost/api/assets/status/",
     "reservations-v1": "http://localhost/api/reservations/status/",
-    "personal-v1": "http://localhost/api/personal/status/"
+    "personnel-v1": "http://localhost/api/personnel/status/"
   }
 }

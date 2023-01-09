@@ -3,7 +3,7 @@ http:
     backend-personal:
       entryPoints:
         - web
-      rule: PathPrefix(`/api/personal`)
+      rule: PathPrefix(`/api/personnel`)
       middlewares:
         # middlewares are defined in backend.yaml
         - api-strip-prefix

@@ -23,7 +23,7 @@ class PersonalV1ApiBackendApplicationTests {
     @Test
     void testStatusApiCall() throws Exception {
         //Setup Mock Behavior
-        this.mockMvc.perform(get("/personal/status/"))
+        this.mockMvc.perform(get("/personnel/status/"))
                 .andExpect(status().isOk());
     }
 

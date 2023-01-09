@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.oauth2.jose.jws.SignatureAlgorithm;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
@@ -34,19 +33,18 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorize -> authorize
-                                .antMatchers(HttpMethod.GET, "/personal/**").permitAll()
-                                .antMatchers(HttpMethod.GET, "/error").permitAll()
-//                        .antMatchers(HttpMethod.POST).authenticated()
-//                        .antMatchers(HttpMethod.PUT).authenticated()
-//                        .antMatchers(HttpMethod.DELETE).authenticated()
-                        .antMatchers(HttpMethod.POST).permitAll()
-                        .antMatchers(HttpMethod.PUT).permitAll()
-                        .antMatchers(HttpMethod.DELETE).permitAll()
+                        .antMatchers(HttpMethod.GET).permitAll()
+                        .antMatchers(HttpMethod.POST).authenticated()
+                        .antMatchers(HttpMethod.PUT).authenticated()
+                        .antMatchers(HttpMethod.DELETE).authenticated()
+//                        .antMatchers(HttpMethod.POST).permitAll()
+//                        .antMatchers(HttpMethod.PUT).permitAll()
+//                        .antMatchers(HttpMethod.DELETE).permitAll()
                 )
                 .csrf().disable()
-                .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
-
-                .exceptionHandling()
+//                .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
+                .oauth2ResourceServer().jwt().and()
+//                .exceptionHandling()
                 .authenticationEntryPoint(authEntryPoint);
 
         return http.build();
@@ -54,7 +52,7 @@ public class SecurityConfiguration {
 
     @Bean
     JwtDecoder jwtDecoder() {
-        //return JwtDecoders.fromIssuerLocation()
+//        return JwtDecoders.fromIssuerLocation()
         return NimbusJwtDecoder.withJwkSetUri(jwkSetUri).jwsAlgorithm(SignatureAlgorithm.RS256).build();
     }
 }

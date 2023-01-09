@@ -42,7 +42,7 @@ public interface PersonalApi {
     }
 
     /**
-     * GET /personal/assignments/ : get all personal assignments
+     * GET /personnel/assignments/ : get all personal assignments
      *
      * @param employeeId    filter for a given employee (optional)
      * @param reservationId filter for a given reservation (optional)
@@ -60,7 +60,7 @@ public interface PersonalApi {
     )
     @RequestMapping(
             method = RequestMethod.GET,
-            value = "/personal/assignments/",
+            value = "/personnel/assignments/",
             produces = {"application/json"}
     )
     default ResponseEntity<PersonalAssignmentsGet200Response> personalAssignmentsGet(
@@ -82,7 +82,7 @@ public interface PersonalApi {
 
 
     /**
-     * DELETE /personal/assignments/{id}/ : delete an assignment by id
+     * DELETE /personnel/assignments/{id}/ : delete an assignment by id
      *
      * @param id uuid of the assignment (required)
      * @return successful operation (status code 204)
@@ -108,7 +108,7 @@ public interface PersonalApi {
     )
     @RequestMapping(
             method = RequestMethod.DELETE,
-            value = "/personal/assignments/{id}/",
+            value = "/personnel/assignments/{id}/",
             produces = {"application/json"}
     )
     default ResponseEntity<Void> personalAssignmentsIdDelete(
@@ -120,7 +120,7 @@ public interface PersonalApi {
 
 
     /**
-     * GET /personal/assignments/{id}/ : get an assignment by id
+     * GET /personnel/assignments/{id}/ : get an assignment by id
      *
      * @param id uuid of the assignment (required)
      * @return successful operation (status code 200)
@@ -141,7 +141,7 @@ public interface PersonalApi {
     )
     @RequestMapping(
             method = RequestMethod.GET,
-            value = "/personal/assignments/{id}/",
+            value = "/personnel/assignments/{id}/",
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
     default ResponseEntity<Assignment> personalAssignmentsIdGet(
@@ -162,7 +162,7 @@ public interface PersonalApi {
 
 
     /**
-     * PUT /personal/assignments/{id}/ : add or update an assignment by id
+     * PUT /personnel/assignments/{id}/ : add or update an assignment by id
      * if an id is supplied in the object, it MUST mach with the one in the url
      *
      * @param id         uuid of the assignment (required)
@@ -194,7 +194,7 @@ public interface PersonalApi {
     )
     @RequestMapping(
             method = RequestMethod.PUT,
-            value = "/personal/assignments/{id}/",
+            value = "/personnel/assignments/{id}/",
             produces = {"application/json"},
             consumes = {"application/json"}
     )
@@ -208,7 +208,7 @@ public interface PersonalApi {
 
 
     /**
-     * POST /personal/assignments/ : add a new assignment
+     * POST /personnel/assignments/ : add a new assignment
      * MAY contain a uuid. If so, this method does the same checks as &#x60;PUT&#x60; does.
      *
      * @param assignment (required)
@@ -245,7 +245,7 @@ public interface PersonalApi {
     )
     @RequestMapping(
             method = RequestMethod.POST,
-            value = "/personal/assignments/",
+            value = "/personnel/assignments/",
             produces = {"application/json"},
             consumes = {"application/json"}
     )
@@ -267,7 +267,7 @@ public interface PersonalApi {
 
 
     /**
-     * GET /personal/employees/ : get all employees
+     * GET /personnel/employees/ : get all employees
      *
      * @return successful operation (status code 200)
      */
@@ -283,7 +283,7 @@ public interface PersonalApi {
     )
     @RequestMapping(
             method = RequestMethod.GET,
-            value = "/personal/employees/",
+            value = "/personnel/employees/",
             produces = {"application/json"}
     )
     default ResponseEntity<PersonalEmployeesGet200Response> personalEmployeesGet(
@@ -304,7 +304,7 @@ public interface PersonalApi {
 
 
     /**
-     * DELETE /personal/employees/{id}/ : delete an employee by id
+     * DELETE /personnel/employees/{id}/ : delete an employee by id
      *
      * @param id uuid of the employee (required)
      * @return successful operation (status code 204)
@@ -334,7 +334,7 @@ public interface PersonalApi {
     )
     @RequestMapping(
             method = RequestMethod.DELETE,
-            value = "/personal/employees/{id}/",
+            value = "/personnel/employees/{id}/",
             produces = {"application/json"}
     )
     default ResponseEntity<Void> personalEmployeesIdDelete(
@@ -346,7 +346,7 @@ public interface PersonalApi {
 
 
     /**
-     * GET /personal/employees/{id}/ : get an employee by id
+     * GET /personnel/employees/{id}/ : get an employee by id
      *
      * @param id uuid of the employee (required)
      * @return successful operation (status code 200)
@@ -367,7 +367,7 @@ public interface PersonalApi {
     )
     @RequestMapping(
             method = RequestMethod.GET,
-            value = "/personal/employees/{id}/",
+            value = "/personnel/employees/{id}/",
             produces = {"application/json"}
     )
     default ResponseEntity<Employee> personalEmployeesIdGet(
@@ -388,7 +388,7 @@ public interface PersonalApi {
 
 
     /**
-     * PUT /personal/employees/{id}/ : add or update an employee by id
+     * PUT /personnel/employees/{id}/ : add or update an employee by id
      * if an id is supplied in the object, it MUST mach with the one in the url
      *
      * @param id       uuid of the employee (required)
@@ -420,7 +420,7 @@ public interface PersonalApi {
     )
     @RequestMapping(
             method = RequestMethod.PUT,
-            value = "/personal/employees/{id}/",
+            value = "/personnel/employees/{id}/",
             produces = {"application/json"},
             consumes = {"application/json"}
     )
@@ -434,7 +434,7 @@ public interface PersonalApi {
 
 
     /**
-     * POST /personal/employees/ : add a new employee
+     * POST /personnel/employees/ : add a new employee
      * MAY contain a uuid. If so, this method does the same checks as &#x60;PUT&#x60; does.
      *
      * @param employee (required)
@@ -467,7 +467,7 @@ public interface PersonalApi {
     )
     @RequestMapping(
             method = RequestMethod.POST,
-            value = "/personal/employees/",
+            value = "/personnel/employees/",
             produces = {"application/json"},
             consumes = {"application/json"}
     )
@@ -489,7 +489,7 @@ public interface PersonalApi {
 
 
     /**
-     * GET /personal/status/ : returns information about the backend-service and status
+     * GET /personnel/status/ : returns information about the backend-service and status
      *
      * @return successful operation (status code 200)
      */
@@ -504,7 +504,7 @@ public interface PersonalApi {
     )
     @RequestMapping(
             method = RequestMethod.GET,
-            value = "/personal/status/",
+            value = "/personnel/status/",
             produces = {"application/json"}
     )
     default ResponseEntity<PersonalStatusGet200Response> personalStatusGet(

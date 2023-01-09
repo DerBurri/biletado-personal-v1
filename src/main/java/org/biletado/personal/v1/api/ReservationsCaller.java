@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.UUID;
@@ -23,7 +24,7 @@ public class ReservationsCaller {
         restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
     }
 
-    public Reservation getReservationsFromId(UUID reservation_id) {
+    public Reservation getReservationsFromId(UUID reservation_id) throws HttpClientErrorException {
         return restTemplate.getForObject(url + reservation_id.toString() + "/", Reservation.class);
     }
 }
