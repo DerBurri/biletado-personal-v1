@@ -4,8 +4,14 @@ import org.biletado.logging.RequestLoggingFilter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.web.error.ErrorAttributeOptions;
+import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
+import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.web.context.request.WebRequest;
+
+import java.util.Map;
 //import com.fasterxml.jackson.databind.Module;
 //import org.openapitools.jackson.nullable.JsonNullableModule;
 
@@ -23,6 +29,24 @@ public class PersonalV1ApiBackendApplication {
 //    public Module jsonNullableModule() {
 //        return new JsonNullableModule();
 //    }
+
+    @Bean
+    public ErrorAttributes errorAttributes() {
+        return new DefaultErrorAttributes() {
+
+            @Override
+            public Map<String, Object> getErrorAttributes(WebRequest webRequest, ErrorAttributeOptions options) {
+                Map<String, Object> errorAttributes = super.getErrorAttributes(webRequest, options);
+                errorAttributes.remove("trace");
+                errorAttributes.remove("status");
+                errorAttributes.remove("timestamp");
+                errorAttributes.remove("path");
+                errorAttributes.remove("error");
+                return errorAttributes;
+            }
+
+        };
+    }
 
     @Bean
     public RequestLoggingFilter logFilter() {

@@ -12,7 +12,6 @@ public class ApiUtil {
 
     static final ObjectMapper mapper = new ObjectMapper();
 
-
     public static void setStringResponse(NativeWebRequest req, String contentType, String string) {
         try {
             HttpServletResponse res = req.getNativeResponse(HttpServletResponse.class);
@@ -24,6 +23,10 @@ public class ApiUtil {
         }
     }
 
+    public static void setMessageResponse(NativeWebRequest req, String string) {
+        setStringResponse(req, MediaType.APPLICATION_JSON_VALUE, "{ \"message\" : \"" + string + "\"}");
+    }
+
     public static void setEntityJsonResponse(NativeWebRequest req, Object entity) {
         try {
             setStringResponse(req, MediaType.APPLICATION_JSON_VALUE, mapper.writeValueAsString(entity));
@@ -31,6 +34,4 @@ public class ApiUtil {
             throw new RuntimeException(e);
         }
     }
-
-
 }

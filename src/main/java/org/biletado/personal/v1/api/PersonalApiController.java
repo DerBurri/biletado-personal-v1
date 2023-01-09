@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -80,7 +79,7 @@ public class PersonalApiController implements PersonalApi {
         } catch (DataAccessException e) {
             getRequest().ifPresent(request ->
             {
-                ApiUtil.setStringResponse(request, MediaType.TEXT_PLAIN_VALUE, "deletion not possible because of existing assignments");
+                ApiUtil.setMessageResponse(request, "deletion not possible because of existing assignments");
             });
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
@@ -92,22 +91,14 @@ public class PersonalApiController implements PersonalApi {
         if (!id.equals(employee.getId())) {
             getRequest().ifPresent(request ->
             {
-                ApiUtil.setStringResponse(request, MediaType.TEXT_PLAIN_VALUE, "mismatching id in url and object");
+                ApiUtil.setMessageResponse(request, "mismatching id in url and object");
             });
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
-        Employee employeeFromDb = employees.findById(id).orElse(null);
         try {
             employees.save(employee);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
-        }
-        if (employeeFromDb == null) {
-            getRequest().ifPresent(request ->
-            {
-                ApiUtil.setEntityJsonResponse(request, employees.save(employee));
-            });
-            return new ResponseEntity<>(HttpStatus.CREATED);
         }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -166,7 +157,7 @@ public class PersonalApiController implements PersonalApi {
         if (employees.findById(assignment.getEmployeeId()).orElse(null) == null) {
             getRequest().ifPresent(request ->
             {
-                ApiUtil.setStringResponse(request, MediaType.TEXT_PLAIN_VALUE, "employee does not exist");
+                ApiUtil.setMessageResponse(request, "employee does not exist");
             });
             return Optional.of(new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY));
         }
@@ -176,7 +167,7 @@ public class PersonalApiController implements PersonalApi {
         } catch (HttpClientErrorException e) {
             getRequest().ifPresent(request ->
             {
-                ApiUtil.setStringResponse(request, MediaType.TEXT_PLAIN_VALUE, "reservation does not exist");
+                ApiUtil.setMessageResponse(request, "reservation does not exist");
             });
             return Optional.of(new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY));
         }
@@ -190,7 +181,7 @@ public class PersonalApiController implements PersonalApi {
             ) {
                 getRequest().ifPresent(request ->
                 {
-                    ApiUtil.setStringResponse(request, MediaType.TEXT_PLAIN_VALUE, "reservation already has an assignment with the given role");
+                    ApiUtil.setMessageResponse(request, "reservation already has an assignment with the given role");
                 });
                 return Optional.of(new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY));
             }
@@ -210,11 +201,10 @@ public class PersonalApiController implements PersonalApi {
 
     @Override
     public ResponseEntity<Void> personalAssignmentsIdPut(UUID id, Assignment assignment) {
-        Assignment assignmentFromDb = assignments.findById(id).orElse(null);
         if (!id.equals(assignment.getId())) {
             getRequest().ifPresent(request ->
             {
-                ApiUtil.setStringResponse(request, MediaType.TEXT_PLAIN_VALUE, "mismatching id in url and object");
+                ApiUtil.setMessageResponse(request, "mismatching id in url and object");
             });
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
@@ -222,14 +212,6 @@ public class PersonalApiController implements PersonalApi {
         Optional<ResponseEntity> responseEntity = newAssignment(assignment);
         if (responseEntity.isPresent()) {
             return responseEntity.get();
-        }
-
-        if (assignmentFromDb == null) {
-            getRequest().ifPresent(request ->
-            {
-                ApiUtil.setEntityJsonResponse(request, assignments.save(assignment));
-            });
-            return new ResponseEntity<>(HttpStatus.CREATED);
         }
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
