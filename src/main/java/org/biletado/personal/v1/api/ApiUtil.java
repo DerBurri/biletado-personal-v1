@@ -2,9 +2,12 @@ package org.biletado.personal.v1.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.biletado.personal.v1.model.Message;
+import org.owasp.encoder.Encode;
 import org.springframework.http.MediaType;
 import org.springframework.web.context.request.NativeWebRequest;
+import org.springframework.web.util.HtmlUtils;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -26,7 +29,7 @@ public class ApiUtil {
             HttpServletResponse res = req.getNativeResponse(HttpServletResponse.class);
             res.setCharacterEncoding("UTF-8");
             res.addHeader("Content-Type", contentType);
-            res.getWriter().print(string);
+            res.getWriter().print(Encode.forHtmlContent(string));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
